@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{margin: 0%;}
+
+        #stage{
+            width: 100%;
+            height: 640px;
+            background-image: url("../images/game_bg.jpg");
+            overflow: hidden;
+            position: relative;
+        }
+
+        #wrapper{
+            width: 100%;
+            height: 160px;
+            border: 2px solid blue;
+            overflow: hidden;
+        }
+
+        #info1, #info2, #info3{
+            width: 33%;
+            float: left;
+            text-align: center;
+            height: 100%;
+        }
+
+        #info1{
+            background-color: aqua;
+        }
+
+        #info2{
+            background-color: red;        
+        }
+
+        #info3{
+            background-color: violet;
+        }
+    </style>
+    <script src="../day1026/classes/Plane.js"></script>
+    <script src="../day1026/classes/Bullet.js"></script>
+    <script src="../day1026/classes/Enemy.js"></script>
+    <script src="../lib/util.js"></script>
+
+    <script>
+        let stage;
+        let bgX =0;
+        let bgSpeed=2; //2픽셀씩, 아이템을 먹거나 하면 배경이 빨라짐, 배경속도 조절
+        let plane;
+        let info1;
+        let info2;
+        let info3;
+        let planeSpeed =5; //비행기의 속도를 결정 짓는 변수
+        let bulletArray = []; //생성될 총알이 여러개이므로 배열로 간다
+        let enemyArray =[]; //적군 객체를 담을 배열
+        let enemyNameArray=["e1.png","e2.png","e3.png","e4.png","e5.png"]; //적군명단을 담을 배열
+
+        //적군출현
+        function createEnemy(){
+           for(let i=0; i< enemyNameArray.length; i++){
+                //container, src, x, y, width, height, velX, velY
+                let enemy =new Enemy(stage,"../images/game/"+enemyNameArray[i],screen.width-100,100*i,80,85,-3,0);
+                enemyArray.push(enemy);
+            }
+        }
+        //비행기 키보드 제어 관련
+        function moveX(sp){
+            plane.velX =sp;
+        }
+
+        function moveY(sp){
+            plane.velY = sp;
+        }
+
+        function fire(){
+            let bullet = new Bullet(stage, "../images/bullet.png",plane.x+plane.width,plane.y+(plane.height/2),20,20,5,0);
+            bulletArray.push(bullet);
+        }
+
+        //실시간 정보(메모리, 게임현황등을 알수 있는)를 출력할 함수
+        function printLog(){
+
+            let str=""
+
+            //info1에 출력  str+= 이전 기록에 누적
+            str+="비행기velX:"+plane.velX+"\n";
+            str+="비행기velY:"+plane.velY+"\n";
+            str+="총알수:" + bulletArray.length+"\n";
+            info1.innerText = str;
+
+            //info2에 출력
+            str="적군수";+enemyArray.length+ "\n";
+
+            info2.innerText=str;
+
+            //info3에 출력
+            str+="배경속도:"+bgSpeed;+"\n";
+            info3.innerText=str;
+        }
+
+        //주인공 등장
+        function createHero(){
+            //constructor(container, src, x , y, width, height, velX, velY)
+            plane = new Plane(stage, "../images/plane.png", 200, 200, 70,70,0,0);
+        }
+
+        //배경효과처리
+        function bgEffect(){
+            bgX-=bgSpeed;
+            stage.style.backgroundPosition = bgX+"px 0px";
+        }
+
+        //fps: frame per second
+        function gameLoop(){
+            //console.log("gameLoop() called..")
+            bgEffect();
+
+            //주인공 루프호출
+            plane.tick();
+            plane.render();
+
+            //총알 루프 호출    
+            for(let i=0; i<bulletArray.length; i++){ //총알이 있을때만
+                bulletArray[i].tick();
+                bulletArray[i].render();
+            }
+
+            //적군 루프 호출
+            //게임에 등장하는 총알들과, 적군들을 조사
+            for(let i=0; i<enemyArray.length;i++){
+                enemyArray[i].tick();
+                enemyArray[i].render();
+            }
+
+            printLog(); //실시간 정보출력
+            setTimeout("gameLoop()",10);
+        }
+        function init(){
+            stage= document.getElementById("stage");
+            info1= document.getElementById("info1");
+            info2= document.getElementById("info2");
+            info3= document.getElementById("info3");
+            
+            createHero();
+            createEnemy();
+            gameLoop();
+
+            //키보드 이벤트연결
+            document.body.addEventListener("keydown",function(e){
+                console.log(e.keyCode); //키코드 따내는 로그
+
+                switch(e.keyCode){
+                    case 37: moveX(-planeSpeed); break;
+                    case 38: moveY(-planeSpeed); break;
+                    case 39: moveX(planeSpeed); break;
+                    case 40: moveY(planeSpeed); break;
+                    case 32: fire(); break;
+                    case 27: ; break; //ESC
+
+                }
+            });
+            
+            document.body.addEventListener("keyup",function(e){
+                switch(e.keyCode){
+                    case 37: moveX(0); break;
+                    case 38: moveY(0); break;
+                    case 39: moveX(0); break;
+                    case 40: moveY(0); break;
+
+                }
+            });
+        }
+
+        window.addEventListener("load", function(){           
+            init();
+        })
+    </script>
+</head>
+<body>
+    <div id="stage"></div>
+    <div id="wrapper">
+        <div id="info1">주인공 관련정보</div>
+        <div id="info2">적군관련정보</div>
+        <div id="info3">게임설정</div>
+    </div>
+</body>
+</html>

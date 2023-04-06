@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>스탑기능</title>
+
+<script>
+	var r = 0; //이미지의 각도를 누적시킬 전역변수
+	var flag = false;
+
+	//문서내의 pic이라는 이미지를 회전시키는 함수
+	function rotateImg(){
+		
+		var pic = document.getElementById("pic");
+
+		if(flag){
+		r+=2;
+		pic.style.transform="rotate("+r+"deg)";
+
+		}
+		setTimeout("rotateImg()",10);
+	}
+
+	function turn(){
+
+		//1.flag뒤집기
+			flag = !flag
+
+		//2.스위치 이미지 전환
+		if(flag){
+			//on
+			document.getElementById("sw").src="../images/switch_on.png";
+
+		}
+		else{
+		//off
+			document.getElementById("sw").src="../images/switch_off.png";
+
+		}
+
+	}
+</script>
+
+</head>
+
+<body align="center" onLoad="rotateImg()">
+
+	<img src="../images/mon.jpg" id="pic">
+	<img src="../images/switch_off.png" id="sw" onClick="turn()">
+
+</body>
+</html>
+

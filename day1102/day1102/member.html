@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>member</title>
+    <style>
+        #wrapper {
+            width: 700px;
+            height: 500px;
+            margin: auto;
+            background-color: yellow;
+            position: relative;
+        }
+
+        #input-area {
+            width: 150px;
+            height: 100%;
+            background-color: aqua;
+            float: left;
+        }
+
+        #input-area div {
+            margin-bottom: 5px;
+        }
+
+        #content {
+            width: 550px;
+            height: 100%;
+            background-color: bisque;
+            float: left;
+        }
+    </style>
+
+    <script>
+
+        let memberArray=[];
+
+        //등록된 json목록을 table로 출력하기
+        function getList(){
+            let tag="<table width='100%' border='1px'>";
+                tag+="<tr>";
+                    tag+="<td>주민앞자리</td>";
+                    tag+="<td>주민뒷자리</td>";
+                    tag+="<td>성별</td>";
+                    tag+="<td>ID</td>";
+                    tag+="<td>이름</td>";
+                    tag+="<td>희망연봉</td>";
+                tag+="</tr>";
+
+            for(let i=0; i<memberArray.length; i++){
+
+                let json= memberArray[i];//배열로부터 json추출
+
+                tag+="<tr>";
+                    tag+="<td>"+json.jumin1+"</td>";
+                    tag+="<td>"+json.jumin2+"</td>";
+                    tag+="<td>"+json.gender+"</td>";
+                    tag+="<td>"+json.id+"</td>";
+                    tag+="<td>"+json.name+"</td>";
+                    tag+="<td>"+json.sal+"</td>";
+                tag+="</tr>";    
+            }
+
+            tag+="</table>";
+
+            document.getElementById("content").innerHTML=tag;
+        }
+
+        //키보드를 눌렀다 뗄떼 7자 이상일떄 제일 첫번째 자리의 문자를 추출하여 1이면 남자 2면 여자로 판단해서, 옵션태그에 반영해보자
+        function checkGender(data){
+
+            //String객체는 문자열이기 때문에 new연산자로 명시하지 않아도 객체로 보아야한다
+            //ex)) let s = "korea"; String 객체이다. 따라서 s.점 찍고 String객체의 api를 사용할 수 있다.
+            //data매개변수는 문자열이 전달되므로, 문자열은 String객체이다. 따라서 data변수에 점찍고 String api 사용가능...
+
+            console.log("현재까지 입력한 문자열의 길이는", data.length);
+
+            if(data.length>=7){
+
+                //문자열의 제일 앞자를 추출한다.            
+                let g= parseInt(data.charAt(0)); //"1","0" 쌍따옴표 제거하여 정수화
+                
+                console.log("당신의 성별코드는", g);
+
+                if(g==1){
+                    
+                    document.getElementsByName("gender")[0].checked=true;
+
+                }else{
+
+                    document.getElementsByName("gender")[1].checked=true;
+                }
+
+            }
+        }
+        
+        //입력 양식의 내용을 메모리에 저장해두자
+        //java수업이였다면, db에 저장..
+        function regist(){
+            //한 사람에 대한 정보를 기존에는 일차원 배열에 담아왔으나 배열은 index를 사용하기 때문에 이름, 급여, 아이디 등을 개발자가 몇번째 index에 넣었는지 사전에 알고 있어야 한다는 단점이 있다
+            //해결책) 직관성이 있으면서, 데이터에 대한 접근을 index가 아닌 변수명으로 접근하는방법 =객체 사용
+
+            //문자열로 선언하지 않은 상태이므로, parsing 과정이 필요 없다, 그냥 쓰면된다. 즉 JSON 내장객체로 봐도 무관
+            let json={
+            };
+
+            //비어있는 json객체에 동적으로 변수명과 데이터를 할당하자
+            json["jumin1"]=document.getElementsByName("jumin")[0].value;
+            json["jumin2"]=document.getElementsByName("jumin")[1].value;
+            
+            let checkedValue;
+            if(document.getElementsByName("gender")[0].checked==true){ //남자가 체크되어 있다면
+
+                checkedValue=document.getElementsByName("gender")[0].value;
+
+            }else{  //여자가 체크되어 있다면
+
+                checkedValue=document.getElementsByName("gender")[1].value;
+            }
+            json["gender"]=checkedValue;
+            json["id"]=document.getElementsByName("id")[0].value;
+            json["name"]=document.getElementsByName("name")[0].value;
+
+            if(isNaN(document.getElementsByName("sal")[0].value)){
+
+                alert("숫자를 넣어주세요");
+                return;
+            }
+            json["sal"]=document.getElementsByName("sal")[0].value;
+            
+            console.log("현재까지 완성된",json);
+
+            //완성된 한 사람에 대한 정보를 배열에 넣자!
+            memberArray.push(json);
+        }   
+
+        function toLowerString(obj){
+            //매개변수로, 이벤트를 일으킨 컴포넌트인 input이 전달됨
+            console.log("커서 벗어남");
+
+            //아이디 입력박스의 값을 소문자로 자동 변경
+            obj.value=obj.value.toLowerCase();
+            
+        }
+
+        function init(){
+            //버튼에 이벤트 연결
+            document.querySelector("button").addEventListener("click",function(){
+                regist();
+                getList()
+               
+            });
+        }
+
+        window.addEventListener("load",function(){
+            init();
+        });
+
+    </script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="input-area">
+            <form>
+
+                <div>
+                    <input type="text" placeholder="주민번호 앞자리" size="10" name="jumin" maxlength="6">
+                    <input type="text" placeholder="주민번호 뒷자리" size="10" name="jumin" maxlength="7" onkeyup="checkGender(this.value)">
+                </div>
+
+                <div>
+                    남<input type="radio" name="gender" value="남">
+                    여<input type="radio" name="gender" value="여">
+                </div>
+
+                <div>
+                    <input type="text" placeholder="아이디입력" size="12" name="id" onblur="toLowerString(this)">
+                </div>
+
+                <div>
+                    <input type="text" placeholder="이름입력" size="12" name="name">
+                </div>
+
+                <div>
+                    <input type="text" placeholder="희망연봉" size="12" name="sal">     
+                </div>
+
+                <div>
+                    <button type="button">등록</button>
+                </div>
+            </form>
+
+
+        </div>
+
+        <div id="content"></div>
+    </div>
+</body>
+
+</html>

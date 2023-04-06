@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부드러운메뉴막대</title>
+    <script>
+        var box;
+        var a=0.1;
+        var targetH=400; //막대가 도달할 목표높이
+        var st; //프로그램 실행중에 어느때라도 접근하기 위해 전역변수로 뻄
+
+        function setSize(){
+            //빨간막대의 스타일중 높이값을 증가 시켜야함(마우스를 올릴때) --> 기존막대높이 + a*(목표높이 - 기존높이)
+            //빨간막대의 스타일중 높이값을 감소 시켜야함(마우스를 내릴때)          
+            box.style.height= parseFloat(box.style.height) + a*(targetH - parseFloat(box.style.height))+"px";
+            box.innerText= parseFloat(box.style.height);
+        }
+        /*마우스를 올려놓으면 막대의 목표지점을 400으로 주자
+        function roleOver(){
+            targetH=400;
+        }
+        //마우스를 내려놓으면 막대의 목표지점을 45                           -----------------> 함수2개 사용
+        function roleOut(){
+            targetH=45;
+        }*/
+        
+        function roleOver(h){
+            targetH=h;
+        }
+        //이 함수를 호출하면, setInterval() 작동
+        function startLoop(){
+            //사용자 대신 setSize()를 지속적으로 자동 호출해주는 함수 사용
+           st = setInterval("setSize()",10);     
+           //활성화의 의미로 배경주기
+           box.style.background="red";   
+        }
+        //실행중인 setInterval을 멈춰보자
+        function stopLoop(){
+            clearInterval(st);
+            box.style.background="#eeeeee";
+        }
+        function init(){
+            //css적용을 style 태그에서 하지 않고 순수 프로그램에서 시도해보자!
+            box = document.getElementById("box");
+            box.style.width = 150 + "px";
+            box.style.height = 45 + "px";
+            box.style.background="#eeeeee";
+            //위치설정
+            box.style.position="absolute";
+            box.style.left=300+"px";  
+        }    
+
+    </script>
+</head>
+<body onload="init()">
+    <div id="box" onmouseover="roleOver(400)" onmouseout="roleOver(45)"></div>
+    <button onclick="setSize()">수동</button>
+    <button onclick="startLoop()">엔진가동</button>
+    <button onclick="stopLoop()">엔진정지</button>
+</body>
+</html>

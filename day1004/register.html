@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <title>회원가입</title>
+</head>
+<body>
+
+    <style>
+        /*이 영역은 html이 아닌 css라는 디자인 코드 영역이다
+      이 영역에 스타일시트를 작성하는 방식을 가리켜 임베디드 방식 */
+    
+    /* 문서내에 있는 모든 ~~td를 대상으로 {영역의 디자인을 적용시킴} */
+    
+    td{
+        font-size: 9px;
+    }
+    
+    input{
+        background-color: rgb(242, 255, 240);
+        border: 1px solid black; 
+    }
+
+    select{
+        background-color: skyblue;
+        color: aliceblue; /* 폰트 색깔*/
+        font-weight: bold; /* 폰트 굵기*/
+    }
+    </style>
+
+    <table width="600px" border="1px" align="center">
+        <tr>
+         <td style="font-size: 2px;">ID</td>
+         <td><input type="text" placeholder="아이디입력"></td>            
+        </tr>
+        
+        <tr>
+
+            <!-- css적용시 해당태그에 직접 적용하는 방식을 가리켜 인라인 방식
+            단점) 적용대상이 많을 때는, 코드가 중복된다...즉 일괄적용 -->
+         <td style="font-size: 2px;">Password</td>
+         <td><input type="password" maxlength="12" placeholder="비번입력">*12자 이하만 입력하세요
+        </td>            
+        </tr>
+        
+        <tr>
+         <td style="font-size: 2px;">Email</td>
+         <td><input type="text" placeholder="이메일아이디 " style="background-color: skyblue" >@
+            <select>
+                <option value="naver.com">네이버</option>
+                <option value="google.com">구글</option>
+                <option value="daum.net">다음</option>
+                <option value="">직접입력</option>
+
+
+            </select>
+        </td>            
+        </tr>
+
+        <tr>
+            <td style="font-size: 2px;">우편번호</td>
+            <td>
+                <input type="text" size="5" readonly> - <input type="text" size="5" readonly>
+                <input type="button" value="우편번호 검색">
+            </td>
+        </tr>
+    
+        <tr>
+            <td style="font-size: 2px;">주소</td>
+            <td>
+                <input type="text" > - <input type="text">
+                <input type="text" placeholder="나머지 주소"    
+            </td>
+        
+        </tr>
+        
+        <tr>
+            <td style="font-size: 2px;">취미</td>
+            <td>
+                독서<input type="checkbox">   
+                여행<input type="checkbox">   
+                사진<input type="checkbox">   
+                게임<input type="checkbox">   
+            </td>
+        </tr>
+        
+        <tr>
+            <td style="font-size: 2px;">메일 수신</td>
+            <td>
+                Yes<input type="radio" name="receive">   
+                No<input type="radio" name="receive">           
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="center">
+                    <button>가입</button>
+                    <button>주소</button>
+            </td>
+        </tr>
+
+    </table>
+</body>
+</html>

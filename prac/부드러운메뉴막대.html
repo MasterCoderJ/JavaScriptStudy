@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var box;
+        var targetH=400;
+        var a=0.1;
+        var st;
+
+        function setSize(){
+            box.style.height=parseFloat(box.style.height)+a*(targetH-parseFloat(box.style.height))+"px";
+            box.innerText=parseFloat(box.style.height);         
+        }
+
+        function move1(h){
+            targetH=h;
+        }
+
+        function autoMove(){
+         st = setInterval("setSize()",10);
+         box.style.background="red";
+        }
+
+        function stopMove(){
+            clearInterval(st);
+            box.style.background="gray";
+        }
+
+        function init(){
+            box= document.getElementById("box");
+            box.style.width = 100+"px";
+            box.style.height = 50 + "px";
+            box.style.background= "red";
+            box.style.position="absolute";
+            box.style.left= 300+"px"
+        }
+    </script>
+</head>
+<body onload="init()">
+    <div id="box" onmouseover="move1(400)" onmouseout="move1(45)"></div>
+    <button onclick="setSize()">수동</button>
+    <button onclick="autoMove()">자동</button>
+    <button onclick="stopMove()">종료</button>
+    
+</body>
+</html>

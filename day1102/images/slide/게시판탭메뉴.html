@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!-- saved from url=(0091)file:///C:/js_workspace/day1017/%EA%B2%8C%EC%8B%9C%ED%8C%90%ED%83%AD%EB%A9%94%EB%89%B4.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판탭메뉴</title>
+    <style>
+        /*클래스: 디자인의 대상이 명시되어있지 않고, 역으로 먼저 디자인 스타일을 정의한 후, 이 디자인을 적용하고 싶은 대상에 class를 명시하면됌*/
+        .menuStyle{
+            border: 1px solid gray;
+            border-radius: 3px;
+        }
+        #notice{
+            background-color: coral;
+        }
+        #qna{
+            background-color: red;
+        }
+        #faq{
+            background-color: aqua;
+        }
+    </style>
+    <script>
+       
+       let boardArray;
+       
+        function showHide(t1,t2,t3){
+        
+         //3개의 게시판 테이블중, 첫번쨰 테이블만 보이게 처리
+         boardArray = document.getElementsByName("board");
+         boardArray[0].style.display=t1; //보이게
+         boardArray[1].style.display=t2; //안보이게
+         boardArray[2].style.display=t3;
+    
+           
+
+        }
+
+        function init(){
+            showHide();
+        }
+
+        window.addEventListener("load", function(){
+            init();
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="tab">
+            <span class="menuStyle" id="notice">게시판</span>
+            <span class="menuStyle" id="qna">QnA</span>
+            <span class="menuStyle" id="faq">FAQ</span>
+        </div>
+        <div id="content">
+            <table border="1px" width="100%" style="background: coral; display: block;" name="board" onclick=""> <!--name의 경우 자동적으로 배열지정됌-->
+                <thead> <!--td안에 있는 글씨들이 두꺼워짐-->
+                    <tr><td>No</td>
+                    <td>제목</td>
+                    <td>작성자</td>
+                    <td>등록일</td>
+                    <td>조회수</td>
+                </tr></thead>
+                <tbody>
+                    <tr>
+                        <th>13</th>
+                        <th>카카오톡 서비스 중지 알림</th>
+                        <th>관리자</th>
+                        <th>2022-10-17</th>
+                        <th>45785</th>
+                    </tr>
+                    <tr>
+                        <th>13</th>
+                        <th>카카오톡 서비스 중지 알림</th>
+                        <th>관리자</th>
+                        <th>2022-10-17</th>
+                        <th>45785</th>
+                    </tr>
+                    <tr>
+                        <th>13</th>
+                        <th>카카오톡 서비스 중지 알림</th>
+                        <th>관리자</th>
+                        <th>2022-10-17</th>
+                        <th>45785</th>
+                    </tr>
+                    <tr>
+                        <th>13</th>
+                        <th>카카오톡 서비스 중지 알림</th>
+                        <th>관리자</th>
+                        <th>2022-10-17</th>
+                        <th>45785</th>
+                    </tr>
+                    <tr>
+                        <th>13</th>
+                        <th>카카오톡 서비스 중지 알림</th>
+                        <th>관리자</th>
+                        <th>2022-10-17</th>
+                        <th>45785</th>
+                    </tr>
+                    <tr>
+                        <th>13</th>
+                        <th>카카오톡 서비스 중지 알림</th>
+                        <th>관리자</th>
+                        <th>2022-10-17</th>
+                        <th>45785</th>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!--qna시작-->
+            <table border="1px" width="100%" style="background: red; display: none;" name="board">
+                <thead> <!--td안에 있는 글씨들이 두꺼워짐-->
+                    <tr><td>No</td>
+                    <td>제목</td>
+                    <td>작성자</td>
+                    <td>등록일</td>
+                    <td>조회수</td>
+                </tr></thead>
+                <tbody>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!--faq시작-->
+            <table border="1px" width="100%" style="background: aqua; display: none;" name="board">
+                <thead> <!--td안에 있는 글씨들이 두꺼워짐-->
+                    <tr><td>No</td>
+                    <td>제목</td>
+                    <td>작성자</td>
+                    <td>등록일</td>
+                    <td>조회수</td>
+                </tr></thead>
+                <tbody>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카카오톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+
+</body></html>

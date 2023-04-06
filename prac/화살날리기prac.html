@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>화살날리기</title>
+    <script src="..//lib/util.js"></script>
+    <script>
+        let span = new Array(3);
+        let color = ["red", "orange", "green"];
+        let line = ["→", "←", "↑"];
+        let targetH = new Array(span.length);
+        let x = 0;
+        let y = 0;
+        let velX = 2; //2칸씩 전진(픽셀 결정)
+        let velY = 2;
+        
+
+        //화살을 생성하는 함수 정의
+        function createArrow() {
+            //함수는 소속관계가 없으므로, this가 사실 비어있다. 이때 함수안에서 굳이 this를 명시하면, 상위영역인 window를 참조하게 된다.
+            //console.log(this);
+            for (let i = 0; i < span.length; i++) {
+                span[i] = document.createElement("span");
+                span[i].innerText = line[i];
+                span[i].style.fontSize = (i*30) + "px";
+                span[i].style.color = color[i];
+                span[i].style.position = "relative";
+                span[i].style.left = (i * 50) + 3+ "px"
+                span[i].style.top = (i * 100) + 3+  "px";
+                span[i].style.fontSize = (i * 30) + 3+ "px";
+
+                //문서에 부착
+                document.body.appendChild(span[i]);
+            }
+        }
+
+        //화살 움직이기
+        function move(){
+            setInterval("move()",10);
+        }
+
+
+        function setTarget() {
+            for (let i = 0; i < span.length; i++) {
+                targetH[i] = getRandomWithRange(0, 400);
+                x+=velX;
+            }
+        }
+
+        function init() {
+            createArrow();
+            setTarget();
+            move();
+        }
+        window.addEventListener("load", function () {
+            init();
+        })
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <style>
+
+        #ball{
+            width: 70px;
+            position: absolute;
+            left: 200px;
+            top: 300px;
+        }
+
+        #wall{
+            width: 400px;
+            position: absolute;
+            left: 700px;
+            top: 20px;
+
+        }
+
+    </style>
+
+ <script>
+
+        var x = 200;
+        
+        var a; //값을 지정하지 않아도 작동되는 이유??
+       
+        var flag = true;
+        
+        function moveRight1(){      //수동 움직임
+       
+        var pic = document.getElementById("ball");
+    
+         if( x > 645 || x < 0){
+            flag = !flag;
+         }
+            x = flag ? x + 10 : x - 10;
+      
+            pic.style.left = x+"px";       
+        }
+    
+   function moveRight2(){ //자동 움직임
+
+    var pic = document.getElementById("ball"); //없어도 작동하는데 왜 그런지??
+
+    if( x > 645 || x < 0)
+         {
+            flag = !flag;
+         }
+         a = setInterval("moveRight1(),50");
+
+         pic.style.left = x+"px";
+
+   }
+
+   function autoStop(){ //멈춤
+
+        clearTimeout(a);
+
+   }
+            
+
+</script>
+
+</head>
+<body>
+    <div id="info"></div>
+    <table border="1px"> <!--버튼부분-->
+
+        <tr>
+            
+            <td><input type="button" value="수동"onClick="moveRight1()" id="ball1"></td>
+            <td><input type="button" value="자동"onClick="moveRight2()" id="ball2"></td>
+            <td><input type="button" value="멈춤"onClick="autoStop()" id="ball2"></td>
+            
+
+        </tr>
+
+    </table>
+    
+    <img id="ball" src="../images/b1.jpg" width="70px">  <!--공-->
+
+    <img id="wall" src="../images/wall.jpg" width="400px" height="800px">  <!--벽-->
+
+</body>
+</html>

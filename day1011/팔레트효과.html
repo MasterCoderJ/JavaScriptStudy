@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>팔레트효과</title>
+
+    <style>
+        #wrapper{
+            width: 800px;
+            height: 600px;
+            margin: auto;
+            background-color: yellow;            
+        }
+
+        #thumb{
+            width: 100%;
+            height: 100px;
+            background-color: aqua;
+            overflow: hidden;
+            /*자식요소가  float으로 뜨게 되면 부모요소는 overflow:hidden을 줘야함!(퍼블리셔의 원칙)*/
+        }
+
+        #content{
+            width: 100%;
+            height: 700px;
+            background-color: chartreuse;            
+        }
+
+        #thumb div{
+            width: 100px;
+            height: 80px;
+            border: 2px solid black;
+            float: left; /*div는 block형이므로 같은 수평선상에 다른 태그 요소를 허용하지 않음*/
+        }
+
+    </style>
+
+    <script>
+        /* 매개변수를 이용하면, 함수의 개수를 줄일수 있다*/
+
+        function setBg(color){
+            //문서내의 content영역의 배경색을 red로 바꿀꺼임
+            var content = document.getElementById("content");
+            content.style.background = color;
+        }
+
+    </script>
+
+    
+
+</head>
+<body>
+
+    <div id="wrapper">
+
+        <div id="thumb">
+            <div id="box1" style="background: red;"onDblClick="setBg('red')"></div>
+            <div id="box2" style="background: orange;"onMouseOver="setBg('orange')"></div>
+            <div id="box3" style="background: yellow;"onMouseOver="setBg('yellow')"></div>
+            <div id="box4" style="background: green;"onMouseOver="setBg('green')"></div>
+            <div id="box5" style="background: blue;"onMouseOver="setBg('blue')"></div>
+            <div id="box6" style="background: navy;"onMouseOver="setBg('navy')"></div>
+            <div id="box7" style="background: purple;"onMouseOver="setBg('purple')"></div>
+
+        </div>
+        <div id="content"></div>
+    </div>
+    
+    
+    
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        #wrapper {
+            width: 100%;
+            height: 640px;
+            background-color: yellow;
+            position: relative;
+        }
+    </style>
+    <script src="../pracLib/RectPrac.js"></script>
+    <script src="../lib/util.js"></script>
+    <script>
+
+        let rect1;
+        let rect2;
+        function drag(e){
+          
+            rect1.x = e.clientX-50;
+            rect1.y = e.clientY-50;
+            rect1.render();
+
+        }
+
+        function init() {
+            
+            document.body.addEventListener("mousemove", function (e) {
+                
+                drag(e);
+
+            });
+            rect1 = new Rect(document.getElementById("wrapper"), "green", 100, 200, 100, 100);
+            rect2 = new Rect(document.getElementById("wrapper"), "blue", 500, 200, 100, 100);
+
+        }
+
+        window.addEventListener("load", function () {
+            init();
+        });
+    </script>
+</head>
+
+<body>
+    <div id="wrapper"></div>
+</body>
+
+</html>

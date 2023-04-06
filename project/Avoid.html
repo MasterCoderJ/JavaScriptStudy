@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avoid</title>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        #wrapper {
+            width: 1200px;
+            height: 900px;
+            margin: auto;
+            background-image: url("C:/js_workspace/images/starcraft/space2.png");
+
+        }
+
+        #stage {
+            width: 100%;
+            height: 800px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hp-area {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+    <script src="../project/classes/GameObject.js"></script>
+    <script src="../lib/util.js"></script>
+    <script src="../project/classes/Hero.js"></script>
+    <script src="../project/classes/bullet.js"></script>
+    <script src="../project/classes/Enemy.js"></script>
+    <script>
+        let wrapper;
+        let hero;
+        let stage;
+        let hpArea;
+        let gameFlag = true;
+        let bulletArray = [];
+        let enemyArray = [];
+        let enemyNameArray = ["observer.png"];
+
+        //공격무기 활성화
+        function switchOn() {
+            document.body.addEventListener("keydown", function (e) {
+
+                if (e.keyCode == 32) {
+                    fire();//스페이스바
+                }
+            });
+        }
+
+        //기체 제어
+        function moveX(n) {
+            hero.velX = n;
+        }
+
+        function moveY(n) {
+            hero.velY = n;
+        }
+
+        //총알발사하기
+        function fire() {
+            bulletArray.push(new Bullet(stage, "../images/starcraft/bullet.png", hero.x - 7, hero.y - (20), 15, 20, 0, -10));
+            bulletArray.push(new Bullet(stage, "../images/starcraft/bullet.png", hero.x + 30, hero.y - (20), 15, 20, 0, -10));
+        }
+
+        //주인공 출현        
+        //constructor(container, src, x, y, width, height, velX, velY)
+        function createHero() {
+            hero = new Hero(stage, "C:/js_workspace/images/starcraft/wraith.png", 450, 650, 35, 35, 0, 0);
+        }
+
+        //적군개체 등장
+        function createEnemy() {
+            //constructor(container, src, x, y, width, height, velX, velY)
+            for (let i = 0; i < 150; i++) {
+                let x = getRandomWithRange(0, 1200)
+                let y =getRandomWithRange(0, 1200)
+                let enemy = new Enemy(stage, "../images/starcraft/" + enemyNameArray[0], x,y, 80, 85, -1, 1);
+                enemyArray.push(enemy); 
+                
+            }
+        }
+
+      
+
+
+
+        function gameLoop() {
+
+            if (gameFlag) {
+                //console.log("??gameLoop()")
+
+                //주인공
+                hero.tick();
+                hero.render();
+
+                //총알루프
+                for (let i = 0; i < bulletArray.length; i++) {
+
+                    bulletArray[i].tick();
+                    bulletArray[i].render();
+                }
+
+                //적군 루프 호출
+                for (let i = 0; i < enemyArray.length; i++) {
+                    enemyArray[i].tick();
+                    enemyArray[i].render();
+                }
+
+            }
+            
+
+            setTimeout("gameLoop()", 10); //fps
+
+        }
+
+
+        function init() {
+            stage = document.getElementById("stage");
+            hpArea = document.getElementById("hp-area");
+            wrapper = document.getElementById("wrapper");
+            createHero();
+            createEnemy();
+            gameLoop();
+
+            document.body.addEventListener("keydown", function (e) {
+                console.log(e.keyCode);
+                switch (e.keyCode) {
+                    case 37: moveX(-5); break; //좌
+                    case 38: moveY(-5); break; //위
+                    case 40: moveY(5); break; //아래
+                    case 39: moveX(5); break; //우
+                    case 27: gameFlag = !gameFlag; break; //Pause
+
+                }
+
+                if (e.keyCode == 80) {
+                    switchOn(e.keyCode == 32); //스페이스바를 눌렀을때만
+                }
+
+            });
+
+            document.body.addEventListener("keyup", function (e) {
+                switch (e.keyCode) {
+                    case 37: moveX(0); break;
+                    case 38: moveY(0); break;
+                    case 40: moveY(0); break;
+                    case 39: moveX(0); break;
+
+                }
+
+            });
+        }
+
+        window.addEventListener("load", function () {
+            init();
+        })
+
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="stage"></div>
+        <div id="hp-area"></div>
+    </div>
+
+</body>
+
+</html>

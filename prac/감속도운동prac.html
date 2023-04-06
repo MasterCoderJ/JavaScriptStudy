@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>감속</title>
+
+    <script>
+
+        var a = 600;
+        var b = 0.1;
+        
+        function mouse1(){
+
+            var pic = document.getElementById("pic");
+            pic.style.left = a + "px"
+        }
+
+        function mouse2(){
+            var pic = document.getElementById("pic");
+            pic.style.left= parseInt(pic.style.left) + b*(a-parseInt(pic.style.left ))+"px";
+
+        }
+       
+        function init(){
+            var pic = document.getElementById("pic");
+            pic.style.position= "absolute";
+            pic.style.left=0+"px"; 
+            pic.style.top= 200+"px";
+
+        }
+
+    </script>
+</head>
+<body onload="init()">
+
+    <button onclick="mouse1()">순간</button>
+    <button onclick="mouse2()">현실</button>
+    <img src="../images/mon.jpg" id="pic">
+    
+</body>
+</html>

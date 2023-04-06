@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .menuStyle{
+            border: 1px solid purple;
+            border-radius: 3px;
+        }
+        #notice{
+            background-color: coral;
+        }
+        #qna{
+            background-color: red;
+        }
+        #faq{
+            background-color: aqua;
+        }
+    </style>
+    <script>
+        let boardArray;
+
+       function showHide(n){
+        boardArray= document.getElementsByName("board");
+        for(let i = 0; i<boardArray.length;i++){
+            if(n==i){
+                boardArray[i].style.display="block";
+            }
+            else{
+                boardArray[i].style.display="none";
+            }
+
+        }
+       }
+       function init(){
+        showHide();
+        }
+        window.addEventListener("load",function(){
+            init();
+        })
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+    <div id="tab">
+        <span class="menuStyle" id="notice">게시판</span>
+        <span class="menuStyle" id="qna">QnA</span>
+        <span class="menuStyle" id="faq">FAQ</span>
+    </div>
+    <div id="content">
+        <table border="1px" width="100%" style="background: coral" name="board" onclick="showHide(0)">
+            <thead> 
+                <td>No</td>
+                <td>제목</td>
+                <td>작성자</td>
+                <td>등록일</td>
+                <td>조회수</td>
+            </thead>
+            <tbody>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+            </tbody>
+        </table>
+        <table border="1px" width="100%" style="background: red" name="board" onclick="showHide(1)">
+            <thead> 
+                <td>No</td>
+                <td>제목</td>
+                <td>작성자</td>
+                <td>등록일</td>
+                <td>조회수</td>
+            </thead>
+            <tbody>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+            </tbody>
+        </table>
+        <table border="1px" width="100%" style="background: aqua" name="board" onclick="showHide(2)">
+            <thead> 
+                <td>No</td>
+                <td>제목</td>
+                <td>작성자</td>
+                <td>등록일</td>
+                <td>조회수</td>
+            </thead>
+            <tbody>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+                <th>01</th>
+                <th>임시점검알림</th>
+                <th>관리자</th>
+                <th>2022-10-17</th>
+                <th>3,500</tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</body>
+</html>

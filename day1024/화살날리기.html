@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>화살날리기</title>
+    <script>
+        //ES2015 Script 클래스
+        class Arrow {
+            //java와 달리 멤버 변수는 constructor()생성자에 넣어야함! 필수 암기!!
+            //클래스를 보유한 변수를 멤버변수라 하며 멤버변수는 지역변수가 아니다
+            //누군가가 이 클래스로부터 화살을 생성할때, y값을 결정짓자
+
+            constructor(color, y, velX, fontSize) { //생성자의 생성속도가 create Arrow보다 빠르기 때문에 생성자에 매개변수 입력
+
+                this.color =color;
+                this.span;
+                this.x = 0;
+                this.y= y; //y라는 지역 매개변수를, y라는 멤버변수에 담아둔다, 담아두면 이 객체의 생명이 다할때까지 함께한다...
+                this.velX = velX; //2칸씩 전진(픽셀 결정)
+                this. fontSize = fontSize;
+
+                this.createArrow(); //나의 메서드 호출
+            }
+
+            //클래스 안에 명시 된 함수는, 메서드라 불러야한다. 이 사물의 동작방식을 결정짓는다.
+
+            //화살을 생성하는 함수 정의
+            createArrow() {
+
+                //함수는 소속관계가 없으므로, this가 사실 비어있다. 이때 함수안에서 굳이 this를 명시하면, 상위영역인 window를 참조하게 된다.
+                //console.log(this);
+
+                this.span = document.createElement("span");
+                this.span.innerText = "→";
+                this.span.style.fontSize = this.fontSize + "px";
+                this.span.style.color = this.color;
+                this.span.style.position = "absolute";
+                this.span.style.left = 0 + "px"
+                this.span.style.top = this.y + "px";
+
+                //문서에 부착
+                document.body.appendChild(this.span);
+
+                this.move();
+            }
+
+            //화살 움직이기
+            move() {
+                this.x = this.x +  this.velX; //x+= velX 
+                this.span.style.left =  this.x + "px";
+
+                 //2015년에 발표된 javascript에서는 아래의 문제를 해결하기 위해 화살표 함수 지원
+                 //화살표 함수는 자신 영역의 바깥 영역에 접근이 가능하기 때문에, 화살표 함수 내에서 this는 이 메서드영역의 바깥쪽인 class를 의미
+                setTimeout(()=>{
+                    this.move();
+                }, 10);
+            }
+        }
+
+        function init() {
+           //우리가 정의한 Arrow 거푸집(class)으로부터 실제화살(인스턴스)3개를 만들어보자!
+           //new Arrow(); //new연산자 뒤에 생성자 메서드 호출
+           //java와는 틀리게 js에서는 생성자 메서드명이 클래스명과 일치하지 않다.. 하지만 new Arrow() 코드는 new constructor()호출과 동일하다
+
+           new Arrow("red",100,2,100); //constructor()
+           new Arrow("purple",200,5,40);
+        }
+        window.addEventListener("load", function () {
+            init();
+        })
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

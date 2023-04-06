@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가위바위보</title>
+    <script src="../lib/util.js"></script>
+    <script>
+        /*메모리에 데이터를 올릴때, 순서있게 올리면 규칙이 생기므로, 반복문 및 랜덤처리 용이
+        why? 수치값으로 접근이 가능하므로*/
+        var arr=["가위.png","바위.png","보.png"];
+
+        var img; //모든 함수에서 접근할 수 있도록 전역으로 선언함
+
+        //결과 반영
+        function getResult(){
+        var result = getRandom(arr.length);
+        console.log(arr[result]);
+
+        //화면에 떠있는 이미지를 가위,바위,보 이미지로 대체
+        img.src="../images/"+arr[result];
+        }
+
+        function init(){
+            //문서내에 동적으로 img를 생성하여, body에 부착!
+            img = document.createElement("img"); //<img src="">
+            img.src="../images/mon.jpg";
+            document.body.appendChild(img);
+
+            //버튼 부착
+            var bt = document.createElement("button");//<button></button>
+            bt.innerText="실행하기";
+            document.body.appendChild(bt);//문서에 부착!
+
+            bt.addEventListener("click", function(){
+                getResult()
+            });
+        }
+        
+        window.addEventListener("load" , function(){
+            init();
+        });
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

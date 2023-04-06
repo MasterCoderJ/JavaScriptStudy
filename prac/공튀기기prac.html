@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공튀기기</title>
+    <script src="../lib/util.js"></script>
+    <script src="../prac/BallPrac.js"></script>
+    <style>
+        body{margin: 0%;};
+    </style>
+    <script>
+         let wrapper;
+         let ball;
+         let colorArray=["red","pink","blue","purple","black","aqua","beige","lime","green"];
+
+        function createWall(){
+            //700*700 div제작
+            wrapper = document.getElementById("wrapper");
+            wrapper.style.width = 700+"px";
+            wrapper.style.height= 700+"px";
+            wrapper.style.background="yellow";
+            wrapper.style.margin = "auto";
+            wrapper.style.border="2px solid red";
+            wrapper.style.position = "relative";
+            wrapper.style.overflow="hidden";
+        }
+
+        //볼 인스턴스를 생성하여, 벽을 튕기면서 다니도록 처리하자
+        function createBall(){
+            ball = new Ball(100,50,50,50,colorArray[getRandom(colorArray.length)],getRandomWithRange(1,9),getRandomWithRange(1,9));
+            
+        }
+        function init(){
+            createWall();
+           
+
+            //키보드 이벤트 연결하기
+            document.body.addEventListener("keydown", function(e){
+                if(e.keyCode==32){  //spacebar를 누르면
+                    createBall();
+                }
+                else if(e.keyCode==27){ //exc를 누르면
+                    
+                    //잠시 현재 움직이는 공 멈추기                    
+                    ball.flag=!ball.flag;
+                }
+            })
+        }
+        window.addEventListener("load", function(){
+            init();
+        })
+    </script>
+</head>
+<body>
+    <div id="wrapper"></div>
+    
+</body>
+</html>

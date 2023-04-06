@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과일명출력하기</title>
+    <script>
+        /*메모리에 데이터를 올리는 방법중 우리가 배운것은 변수 선언 방법 그러나 이 방법이 과연 최선일까? 
+        결론) 변수선언에 의해 데이터를 올리는 방법은 소수의 데이터를 대상으로는 아무런 문제가 없지만, 대량의 데이터를 메모리에 올리고 처리할때는 효율성이 떨어짐
+        해결책) 현실세계에서 줄을 맞추거나 ,순서를 지키면 규칙이라는것이 생성 ->일괄처리 가능
+        전산에서도 데이터를 메모리에 올릴때 순서를 가지면 올릴 수 있는 기법이 있다..이를 모든 프로그래밍 언어에서 배열이라고 한다.*/
+
+        //메모리에 10개의 데이터가 들어갈 수 있는 상자를 생성
+        var fruit=new Array(10);
+
+        fruit[0]="멜론";//첫번째방에 넣기
+        fruit[1]="사과";
+        fruit[2]="바나나";
+        fruit[3]="포도";
+        fruit[4]="자두";
+        fruit[5]="수박";
+        fruit[6]="키위";
+        fruit[7]="복숭아";
+        fruit[8]="배";
+        fruit[9]="레몬";
+
+        for(a=0;a<10;a++){
+        document.write(fruit[a]+"<br>");
+        }
+    </script>
+</head>
+<body onload="init()">
+
+    
+</body>
+</html>

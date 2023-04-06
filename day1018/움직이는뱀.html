@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>움직이는뱀</title>
+    <style>
+        body {
+            margin: 0%;
+        }
+
+        /*body태그와 문서간의 거리 없애기*/
+
+        #wrapper {
+            width: 100%;
+            height: 700px;
+            border: 1px solid red;
+
+        }
+    </style>
+    <script>
+        let a = 0.1; //비율계수(움직임의 부드러운 정도)
+        let targetX = 0;
+        let targetY = 0;
+        let boxArray = new Array(40);
+
+        //머리를 body에 부착
+        function createSnake() {
+            for (let i = 0; i < boxArray.length; i++) {
+                let box = document.createElement("div");
+                box.style.width = 50 + "px";
+                box.style.height = 50 + "px";
+                box.style.position = "absolute";
+                box.style.left = (i * 25) + "px";
+                box.style.top = (i * 25) + "px";
+
+                if (i == 0) { //머리이미지 채우기
+                    box.style.background = "url(../images/snake_head.png)";
+                }
+                else {
+                    box.style.background = "url(../images/snake_body.png)";
+                }
+                box.style.backgroundSize = "50px 50px";
+
+                //제일먼저 생성된 요소가 z-index 수치가 0이기 때문에 머리의 z-index를 거꾸로 제일크게 처리
+                box.style.zIndex = boxArray.length - i;
+
+                document.body.appendChild(box);
+                //생성된 사각형을 배열에 담자!
+                boxArray[i] = box;
+            }
+        }
+
+        //머리 움직이기
+        function headMove() {
+            boxArray[0].style.left = parseFloat(boxArray[0].style.left) + a * (targetX - parseFloat(boxArray[0].style.left)) + "px";
+            boxArray[0].style.top = parseFloat(boxArray[0].style.top) + a * (targetY - parseFloat(boxArray[0].style.top)) + "px";
+
+            //몸통은, targetX, targetY를 목표지점으로 두지 않고, 오직 자기의 바로 앞 몸통을 목표지점으로 삼으면 된다
+            for (let i = 1; i < boxArray.length; i++) {
+
+                //머리 위치 = 현재 머리 위치 + 비율*(목표지점-현재머리위치)
+                boxArray[i].style.left = parseFloat(boxArray[i].style.left) + a * (parseFloat(boxArray[i - 1].style.left) - parseFloat(boxArray[i].style.left)) + "px"; // parseFloat(boxArray[i-1].style.left) 앞 몸통
+                boxArray[i].style.top = parseFloat(boxArray[i].style.top) + a * (parseFloat(boxArray[i - 1].style.top) - parseFloat(boxArray[i].style.top)) + "px";
+            }
+        }
+
+        function init() {
+            createSnake();
+            setInterval("headMove()", 10);
+        }
+        window.addEventListener("load", function () {
+            init();
+
+            //body에 마우스 이벤트 연결
+            document.body.addEventListener("mousedown", function (e) {
+                targetX = e.clientX; //목표지점을 좌표와 일치시킴
+                targetY = e.clientY;
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="wrapper"></div>
+</body>
+
+</html>

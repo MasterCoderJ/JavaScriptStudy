@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   
+    <title>공튀기기</title>
+
+    <style>
+
+        #wrapper{
+            width: 1000px;
+            height: 800px;
+            margin: auto;
+            background: white;
+        }
+
+        #img{
+
+        width: 70px;
+		position: absolute;/*부모요소를 기준으로 한 위치*/
+		left: 200px;
+		top: 300px;
+        }
+
+        #wall{
+            width: 35%;
+            height: 100%;
+            background: url(../images/wall.jpg);
+            background-size: 250px 800px;
+            float: right;
+        }
+
+    </style>
+
+    <script>
+
+
+    </script>
+
+    
+</head>
+<body>
+    <table border = "2px">
+		
+		<tr>
+           
+            <td><input type="button" value="수동"onClick="moveRight()"></td>
+            <td><input type="button" value="자동"onClick="moveRight()t"></td>
+
+        </tr>
+
+<div id="wrapper">
+    
+    <div id="wall"> </div>
+
+	 </table>
+    
+</body>
+
+<img src="../images/b1.jpg"  width="100px">
+
+</html>

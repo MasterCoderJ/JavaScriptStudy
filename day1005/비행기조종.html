@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+
+<title>비행기를타보자</title>
+</head>
+
+<style>
+	body{
+		background-image:url(../images/game_bg.jpg);
+	}
+
+	img{
+		width: 70px;
+		position: absolute;/*부모요소를 기준으로 한 위치*/
+		left: 200px;
+		top: 300px;
+	}
+
+</style>
+
+<script>
+
+	var x = 200;
+	var y = 300;
+
+	//배경 자동으로 움직이게 하자!!
+
+	//moveBg(); 아직 body태그를 읽은적이 없으므로, 존재하지 않는 타이밍에 접근하려면 null에러 발생
+
+	function moveDown(){
+
+		var pic=document.querySelector("img");
+		y=y+5; //증가
+		pic.style.top=y+"px"
+	}
+
+	function moveUp(){
+
+		var pic=document.querySelector("img"); //너무 길어서 변수로 담음
+		y=y-5;
+		pic.style.top=y+"px";
+	}
+
+	function moveLeft(){
+
+		var pic=document.querySelector("img");
+		x=x-5;
+		pic.style.left=x+"px"
+	}
+	
+	function moveRight(){
+		var pic=document.querySelector("img");
+		x=x+5;
+		pic.style.left=x+"px"
+				
+	}
+
+</script>
+
+<body>
+	<table border ="1px">
+
+        <tr>
+            <td></td>
+            <td><input type="button" value="↑"onClick="moveUp()"></td>
+            <td></td>
+
+        </tr>
+
+        <tr>
+            <td><input type="button" value="←"onClick="moveLeft()"></td>
+            <td><input type="button" value="↓" onClick="moveDown()"></td>
+            <td><input type="button" value="→" onClick="moveRight()"></td>
+
+        </tr>
+
+    </table>
+					
+	<img src="../images/plane.png">
+</body>
+</html>
+
+<script>
+
+	var x = 200;
+	var y = 300;
+	var posX = 0;//배경의 x좌표값을 누적시킬 변수
+
+	
+	//배경을 자동으로 움직이게 하자
+
+	function moveBg(){
+		posX=posX-2;
+		
+		document.body.style.backgroundPosition=posX+"px 0px";
+		//document.body.style.backgroundPosition="0px "+posX+"px"; //위아래
+
+	setTimeout("moveBg()", 1); //무한루프
+	}
+
+moveBg();
+
+</script>
+	
+<!-- //body가 완전히 로드 된 후 접근 -->

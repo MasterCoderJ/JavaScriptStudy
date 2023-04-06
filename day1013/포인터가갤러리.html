@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포인터갤러리</title>
+    <style>
+        #wrapper{
+            width: 800px;
+            height: 500px;
+            margin: auto;
+            background-color: yellow;
+        }
+        #thumb_area{
+            width: 50%;
+            height: 100%;
+            background-color: aqua;
+            float: left;
+        }
+        #content{
+            width: 50%;
+            height: 100%;
+            background-color: rgb(147, 226, 43);
+            float: left;
+        }
+    </style>
+    <script src="../lib/data.js"></script>
+    <script>
+        //다른 함수에서 접근할 수 있도록 전역변수로 빼기
+        var thumb_area;
+        var content;
+        var bg; //크게볼 이미지
+       
+       //썸네일 만들기
+        function createThumb(){
+           
+            for(i=0;i<nameArray.length;i++){
+                var img= document.createElement("img");
+                img.src="../images/"+nameArray[i];
+                img.style.width= 100+"px"
+                img.style.height= 100+"px"
+               
+                //썸네일 영역에 생성된 이미지 부착
+                thumb_area.appendChild(img);
+
+                //부착된 썸네일에 이벤트 연결
+                img.addEventListener("click",function(){
+                    //지금선택한 이미지 정보를 이용하여 bg이미지에 적용 --> 반복문이 돌아버리고 이후 실행이기 때문에 실행되어질수 없음
+                    bg.src="../images/"+nameArray[i];
+                });
+            }
+        }
+       
+        //프로그램에 필요한 것들을 준비하는 함수.. 
+        function init(){
+            thumb_area= document.getElementById("thumb_area");
+            content=document.getElementById("content");
+            bg= document.getElementById("bg");
+            createThumb();
+        }
+        window.addEventListener("load", function(){
+            init();
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="thumb_area"></div>
+        <div id="content"><img id="bg"></div>
+    </div>
+    
+</body>
+</html>

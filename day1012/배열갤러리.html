@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배열갤러리</title>
+
+    <style>
+        #wrapper{
+            width: 600px;
+            height: 600px;
+            margin: auto;
+            text-align: center;
+            background-color: yellow;
+        }
+        #info{
+            width: 100%;
+            height: 50px;
+            float: left;
+            background-color: red;
+            font-size: 35px;
+            color: aliceblue;
+        }
+        #content{
+            width: 100%;
+            height: 500px;
+            float: left;
+            background-color: blue;
+        }
+        #control{
+            width: 100%;
+            height: 50px;
+            float: left;
+            background-color: purple;
+        }
+        #content img{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+    <script>
+
+        var photo = new Array(10); //메모리에 비어있는 공간을 10개 생성
+        var a = 0; //몇번째 배열 사진을 볼지 결정짓는 전역변수
+        var st; //현재 진행중인 자동호출 함수를 가리키는 전역변수
+        
+
+    //문서내의 큰 이미지의 src를 다음 사진이 나오게 처리
+     function next(index){
+        var big = document.getElementById("big");
+        big.src="../images/sea/"+photo[index];
+        
+
+       //정보출력
+       var info = document.getElementById("info");
+       info.innerHTML="<marquee>"+photo[index]+"</marquee>";
+    }
+    //지금보고있는 사진의 다음사진 보기
+    function nextPhoto(){
+        if(a<9){
+        a++; //0에서 9까지만 유효
+        }
+        else{
+            alert("멈추시오");
+        }
+        next(a);
+    }
+    
+    function prevPhoto(){        
+        if(a>=1){
+        a--; //1보다 클때까지만
+        }
+        else{
+            alert("시작부분입니다");
+        }
+        next(a);
+    }
+
+    function autoPhoto(){
+        st= setInterval("nextPhoto()",1000);
+
+    }
+
+    function pause(){
+        clearInterval(st);
+    }
+   
+   
+    //프로그램이 가동되면, 이 갤러리 프로그램에서 사용할 이미지명들을 순서있게 메모리에 띄우자! 이유는 순서가 없는 이미지들이기 때문에 갤러리 구현이 불가함
+    function init(){
+        
+        photo[0] = "abc.jfif";
+        photo[1] = "amgy.jfif";
+        photo[2] = "ney.jfif";
+        photo[3] = "bbnj.jfif";
+        photo[4] = "api.jfif";
+        photo[5] = "ccv.jfif";
+        photo[6] = "rrt.jfif";
+        photo[7] = "eert.jfif";
+        photo[8] = "kko.jfif";
+        photo[9] = "mop.jfif";
+
+        next(a);
+    }
+
+        
+    </script>
+</head>
+
+<body onLoad="init()">
+   
+    <div id="wrapper">
+    
+    <div id="info" border="2px">배열갤러리</div>
+    <div id="content">
+        <img  id="big">
+    </div>
+    
+    <div id="control">
+        
+        <button onclick="prevPhoto()">이전</button>
+        <button onclick="pause()">일시정지</button>
+        <button onclick="autoPhoto()">자동</button>
+        <button onclick="nextPhoto()">다음</button>
+
+    </div>
+    </div>
+    
+</body>
+</html>

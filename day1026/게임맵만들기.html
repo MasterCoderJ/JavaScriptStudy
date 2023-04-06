@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        let div; //바깥쪽 래퍼
+        let blockWidth = 50; //한칸당 너비
+        let blockHeight = 50; //한칸당 높이
+        let img;
+
+        let map = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+            [0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 2, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+
+        function createMap() {
+
+            for (let a = 0; a < map.length; a++) {
+                for (let i = 0; i < map[0].length; i++) {
+                   
+                    let img = document.createElement("img");
+
+                    if (map[a][i] == 0) {                        
+                        img.src = "../images/brick1.png";
+                        img.style.position = "absolute";
+                        img.style.left = (i * blockWidth) + "px";
+                        img.style.top = (a * blockHeight) + "px";
+                        img.style.width = blockWidth + "px";
+                        img.style.height = blockHeight + "px";
+                        div.appendChild(img);
+                    }
+                    else if(map[a][i] == 1) {                        
+                        img.src = "../images/brick2.png";
+                        img.style.position = "absolute";
+                        img.style.left = (i * blockWidth) + "px";
+                        img.style.top = (a * blockHeight) + "px";
+                        img.style.width = blockWidth + "px";
+                        img.style.height = blockHeight + "px"; 
+                        div.appendChild(img);                      
+                    }
+                    else{                        
+                        img.src = "../images/brick3.png";
+                        img.style.position = "absolute";
+                        img.style.left = (i * blockWidth) + "px";
+                        img.style.top = (a * blockHeight) + "px";
+                        img.style.width = blockWidth + "px";
+                        img.style.height = blockHeight + "px";        
+                        div.appendChild(img);               
+
+                    }
+
+                }
+
+            }
+
+        }
+        //2차원 배열을 해석하여, 배열내의 데이터가 0일때- 일반블럭 1일때-물음표 2일때-깨진블록
+        function createWrapper() {
+            div = document.createElement("div");
+
+            //전체 건물의 너비
+            div.style.width = blockWidth * map[0].length + "px";
+            div.style.height = blockHeight * map.length + "px";
+            div.style.margin = "auto";
+            div.style.position = "relative";
+            div.style.background = "yellow";
+
+            document.body.appendChild(div);
+        }
+
+        function init() {
+            createWrapper();
+            createMap();
+        }
+
+        window.addEventListener("load", function () {
+            init();
+        });
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

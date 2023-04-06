@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+        width: 400px;
+        height: 100px;
+        margin: auto;
+        background-color: yellow;
+        position: relative;
+        overflow: hidden;
+    }
+    </style>
+    <script>
+        let x =2;
+        let imgArray=[];
+        let nameArray=["h1.png","h2.png","h3.png","h4.png","h5.png","h6.png"]
+        let stop;
+        flag=true;
+       
+        function createImage(){
+            for(let i=0;i<nameArray.length;i++){        
+            img= document.createElement("img");
+            img.src="../images/"+nameArray[i];
+            imgArray.push(img); //배열선언시, 해당배열의 크기를 명시한적이 없기 때문에 지금 넣을 요소를 열번째 넣을지 개발자가 고민할 필요없이 그냥 기존 배열에 추가하는 개념을 표현한 함수 push()
+            img.style.width = 100+"px";
+            img.style.height = 100+ "px";
+            img.style.position = "absolute";
+            img.style.left = (i*100)+"px";
+                        
+            let wrapper = document.getElementById("wrapper");
+            wrapper.appendChild(img);
+        }
+
+        }
+
+        function move(){
+            for(let i = 0; i<imgArray.length;i++){        
+            
+            //이미지 x위치 = 현재x위치 + x만큼
+            imgArray[i].style.left=parseInt(imgArray[i].style.left)-x+"px";
+
+            //좌측의 한계점에 도달하면, 마지막위치로 돌려보내기
+            if(parseInt(imgArray[i].style.left)<=-100){
+                imgArray[i].style.left = ((imgArray.length-1)*100)+"px";
+            }
+           
+        }      
+
+        function moveAuto(){
+            if(flag=true){
+                flag=!flag
+                let stop = (flag)?setInterval("move()",20):clearInterval(stop);
+    
+        }
+        }
+    
+        function init(){
+            createImage();
+        }
+        window.addEventListener("load", function(){
+            init();
+            moveAuto();
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper" onmousemove="moveAuto()"></div>
+</body>
+</html>

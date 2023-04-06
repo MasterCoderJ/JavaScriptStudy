@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>횡스크롤슈팅게임</title>
+    <style>
+        body {
+            margin: 0%;
+        }
+
+        #stage {
+            width: 100%;
+            height: 640px;
+            background-image: url("../../images/space.png");
+            background-size: 700px, 640px;
+        }
+    </style>
+    <script src="./Plane.js"></script>
+    <script src="./Bullet.js"></script>
+    <script src="./Enemy.js"></script>
+    <script>
+
+        let stage;
+        let bgX = 0;
+        let plane;
+        let bulletArray = []; //empty 배열 size 0;
+        let enemyNameArray = ["e1.png","e2.png","e3.png","e4.png","e5.png"];//적군객체들을 담을 배열
+        let enemyArray = [];
+
+        //적군생성하기
+        function createEnemy(){
+
+            for(let i =0; i< enemyNameArray.length; i++){
+                enemy = new Enemy(stage, screen.width-300, (i*100), 75, 70, -3, 0, "C:/js_workspace/images/game/"+enemyNameArray[i]);
+                enemyArray.push(enemy); //적군을 배열에 추가
+            }
+        }
+
+        //주인공 움직이기
+        function moveX(velX){
+            plane.velX=velX;
+        }
+
+        function moveY(velY){
+            plane.velY=velY;
+        }
+
+        //총알발사 함수 정의
+        function fire(){
+            let bullet = new Bullet(stage,plane.x+plane.width, plane.y+(plane.height/2), 20,20,10,0,"../../images/bullet.png");
+            bulletArray.push(bullet);
+        }
+
+        //주인공생성하기
+        function createHero(){
+            plane = new Plane(stage,100,200,90,65,0,0);
+        }
+
+        //배경흘려보내기
+        function bgEffect() {
+            //게임의 배경 y축 좌표를 음수방향으로 변경하자
+
+            bgX = bgX - 1;
+
+            stage.style.backgroundPosition = bgX + "px 0px";
+
+        }
+
+        function gameLoop() {
+            bgEffect();
+
+            plane.tick(); //물리변화
+            plane.render(); //화면에 그리기
+
+            for(let a= 0; a<enemyArray.length; a++){
+                enemyArray[a].tick();
+                enemyArray[a].render();
+            }
+
+            //총알날리기
+            for(let i = 0; i<bulletArray.length;i++){
+                bulletArray[i].tick();
+                bulletArray[i].render();
+
+                //스크린 밖으로 나가면 총알 제거 --> 화면에서 먼저 요소를 지우고 배열을 지워야함!!!!!
+                
+                if(bulletArray[i].x> screen.width-200){
+                    
+                    //bulletArray.indexOf(); //배열 속 총알을 찾는 식 bulletArray[i] 자체가 index이므로 필요 없음
+
+                    //화면에서 제거
+                    stage.removeChild(bulletArray[i].img); //요소를 지워야하기 때문에 img
+
+                    //배열에서 제거
+                    bulletArray.splice(i,1);
+                }
+            }
+
+            setTimeout("gameLoop()", 10);
+        }
+
+        function init() {
+            //alert(screen.width+","+screen.height); //스크린 가로세로 구하기
+
+
+
+            stage = document.getElementById("stage");
+            createHero(); //주인공 등장
+            createEnemy(); //적군등장
+
+            document.body.addEventListener("keydown", function(e){  //주인공을 키보드로 제어할수 있도록 body 이벤트 연결하기 
+               
+                //키코드 37 left, 38 up, 40 down, 32 space
+                switch(e.keyCode){
+                    case 37: moveX(-5); break;
+                    case 38: moveY(-5); break;
+                    case 39: moveX(5); break;
+                    case 32: fire(); break;
+                    case 40: moveY(5); break;
+                }
+            });
+
+            document.body.addEventListener("keyup", function(e){  //주인공을 키보드로 제어할수 있도록 body 이벤트 연결하기 
+               
+               //키코드 37 left, 38 up, 40 down, 32 space
+               switch(e.keyCode){
+                   case 37: moveX(0); break;
+                   case 38: moveY(0); break;
+                   case 39: moveX(0); break;
+                   case 40: moveY(0); break;
+               }
+           });
+            gameLoop();
+        }
+        window.addEventListener("load", function () {
+            init();
+        })
+    </script>
+</head>
+
+<body>
+    <div id="stage"></div>
+</body>
+
+</html>

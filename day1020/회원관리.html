@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원관리</title>
+    <style>
+        #wrapper {
+            width: 1000px;
+            height: 600px;
+            margin: auto;
+            background-color: yellow;
+            overflow: hidden;
+        }
+
+        #form-area,
+        #detail-area {
+            width: 150px;
+            height: 100%;
+            background-color: green;
+            float: left;
+        }
+
+        #content {
+            width: 700px;
+            height: 100%;
+            background-color: red;
+            float: left;
+        }
+
+        #search-area {
+            width: 100%;
+            height: 40px;
+            background-color: beige;
+            text-align: center;
+        }
+
+        #search-area select,
+        input,
+        button {
+            height: 30px;
+        }
+
+        #list-area {
+            width: 100%;
+            height: 560px;
+            background-color: burlywood;
+        }
+
+        .input-style {
+            /*css의 클래스를 정의할때는 점. 을 찍어서 정의한다*/
+            background-color: blanchedalmond;
+            border: 1px solid brown;
+            font-size: 18px;
+            width: 96%;
+            height: 25px;
+            margin-top: 5px;
+        }
+
+        tr {
+            text-align: center;
+        }
+    </style>
+    <script>
+
+        let columnName = ["NO", "ID", "이름", "이메일", "성별"];
+        let currentIndex; //현재 내가 선택한 회원의 이차원배열의 index, 즉 내가 보고있는 회원의 집,, 
+        //전역으로 뺀 이유 -->삭제할때 이 index정보가 필요하므로
+
+        //회원들을 담게 될 배열선언
+        let memberList = []; //회원이 몇명이나 등록될지 예상할수 없으므로, 크기를 명시 할 수 없다
+
+        //선택한 회원의 함수정보 가져오기
+        //index 매개변수의 용도: 이차원배열인 memberList에서 추출하고자 하는 일차원 배열을 접근하기 위한 인덱스
+        //예) index가 0일때 memberList[0] 꺼낼수있다.
+        function getInfo(index) {
+            console.log("선택한회원 한사람에 대한 정보는", memberList[index]);
+            let person = memberList[index]; //회원 한명에 대한 정보 추출
+            currentIndex = index;//전역변수로 보관
+
+            //상세보기 input들 가져오기
+            let detail_input = document.getElementsByName("detail_input");
+            detail_input[0].value = person[0]; //id  
+            detail_input[1].value = person[1]; //name 
+            detail_input[2].value = person[2]; //email                                                      --> 무언가 넣거나 추출할때는 .value
+            detail_input[3].value = person[3]; //gender 
+
+        }
+
+        //등록된 회원들의 정보를 테이블로 동적으로 출력한다
+        function printTable() {
+            let listArea = document.getElementById("list-area");        
+
+            let tag = "<table border=\"1px\" width=\"100%\">";//여기에 태그를 누적시킴
+            tag = tag + "<tr align=\"center\">";
+            for (let i = 0; i < columnName.length; i++) {
+                tag = tag + "<td>" + columnName[i] + "</td>"; //td증가
+            }
+
+            //실제 데이터가 출력되어질 tr
+            for (let a = 0; a < memberList.length; a++) {
+
+                //이차원배열꺼냄
+                let person = memberList[a];
+
+                tag = tag + "<tr onMouseOver=\"this.style.background='blue'\" onMouseOut=\"this.style.background=''\">";
+                tag = tag + "<td>" + a + "</td>";
+
+                for (let i = 0; i < person.length; i++) {
+                    if (i == 0) { //컬럼이 id일 경우만
+                        tag = tag + "<td><a href=\"javascript:getInfo(" + a + ");\">" + person[i] + "</a></td>";
+                    }
+                    else {
+                        tag = tag + "<td>" + person[i] + "</a></td>";
+                    }
+                }
+                tag = tag + "</tr>";
+            }
+            tag = tag + "</table>";
+            listArea.innerHTML = tag; //오른쪽에 있는 데이터를 왼쪽에 대입하시오
+
+        }
+
+        //폼에 입력한 정보를 메모리 한 공간에 저장해놓자, 한 사람에 대한 정보는 단일데이터가 아니라 id, name, email 등의 복수의 데이터 이므로, 여러데이터를 담을 수 있는 배열로 가자
+        function regist() {
+
+            //사용자가 입력한 데이터 가져오기
+            let t_input = document.getElementsByName("t_input");
+
+            if (t_input[0].value == "") {
+                alert("아이디를 입력하세요");
+                t_input[0].focus();  //키 입력이 가능하도록 깜빡이를 적용
+            }
+            else if (t_input[1] == "") {
+                alert("이름을 입력하세요");
+                t_input[1].focus();
+            }
+            else if (t_input[2] == "") {
+                alert("이메일을 입력하세요");
+                t_input[2].focus();
+            }
+            else if (t_input[3] == "") {
+                alert("성별을 입력하세요");
+                t_input[3].focus();
+            }
+            else {
+                //모든 유효성 체크를 통과했으므로, 이 회원에 대한 정보를 일차원배열에 담아보자
+                let member = []; //배열의 길이가 0 따라서 넣을때 push()
+                member.push(t_input[0].value);
+                member.push(t_input[1].value);
+                member.push(t_input[2].value);
+                member.push(t_input[3].value);
+
+                //전역변수로 선언한 memberList에 member배열을 넣어주자,, 즉 이차원 데이터를 구성
+                memberList.push(member); //이 시점부터 memberList는 이차원 배열이 됌
+
+                console.log("현재까지 가입자 수는", memberList.length)
+
+                printTable();
+                resetForm("t_input");
+            }
+        }
+
+        //회원한명 삭제하기
+        function delMember() {
+
+            //회원을 선택하지도 않은 상태에서 삭제버튼을 누르면 욕!
+            if (currentIndex == undefined) {
+
+                alert("삭제하실 회원을 먼저 선택해주세요");
+
+                return; //코드가 더이상 진행을 못함
+            }
+
+            let id = memberList[currentIndex]; //회원한명 추출
+
+            if (confirm(id + "를삭제하시겠어요?")) {
+                memberList.splice(currentIndex, 1);
+                printTable();
+
+                //alert("선택한 회원이 삭제되었습니다");
+                resetForm("detail_input");
+            }
+
+        }
+
+        //입력폼 초기화 공통함수
+
+        //input_name 매개변수에 지우고싶은 배열명을 넣으면 됨
+        function resetForm(input_name) {
+
+            //상세정보 폼 초기화
+            let tbox = document.getElementsByName(input_name);
+            for (let i = 0; i < tbox.length; i++) {
+                tbox[i].value = "";
+            }
+        }
+
+        //선택한 한 사람의 정보를 수정하자
+
+        function editMember() {
+            if (currentIndex == undefined) {
+                alert("수정하실 회원을 선택해주새요");
+                return;
+            }
+            if (confirm("회원정보를 수정하시겠어요?")) {
+                //currentIndex로 배열을 접근하여 해당 회원의 정보를 수정하고 화면도 갱신 printTable(); 호출
+                let person = memberList[currentIndex]; //1차원배열 꺼내기
+                console.log("수정대상자는", person);
+                let detail_input = document.getElementsByName("detail_input");
+                for (let i = 0; i < detail_input.length; i++) {
+                    person[i] = detail_input[i].value;
+                }
+                printTable();
+            }
+        }
+        //회원이 들어있는 2차원배열만큼 반복하면서 그 안에 들어있는 1차원배열 내의 ID,이름,email,성별 값과 검색어가 일치하는지 조사해보자
+        function searchData() {
+
+            let category = document.getElementById("category");
+            let keyword = document.getElementById("keyword");
+
+            //일차원 배열중 조사대상이 되는 index를 구한다!
+            //id-0 name-1, email-2, 성별-3
+            let targetIndex = parseInt(category.value);
+
+            //검색결과를 담아놓을 배열
+            let resultList=[]; //현재까지는 1차원이다..
+
+            //등록된 회원수 만큼 반복하며 조사
+            for (let i = 0; i < memberList.length; i++) {
+                let person = memberList[i];
+
+                if (person[targetIndex] == keyword.value) {
+
+                    //지역변수인 resultList의 배열에 발견된 사람배열을 채워넣자
+                    resultList.push(person);
+                    console.log(i + "번째 층에서찾았습니다")
+                }
+            }
+
+            //검색처리가 모두 완료되면, ㄱ존의 memberList 배열을 resultList로 교체해버리자!
+            //왜? printTable()함수가 memberList를 이용하고 있으므로
+            memberList=resultList;
+            printTable();
+        }
+
+        window.addEventListener("load", function () {
+            //이벤트 연결
+            let bt_regist = document.getElementById("bt_regist");
+
+            bt_regist.addEventListener("click", function () {
+
+                regist()
+            });
+        });
+
+
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <div id="form-area">
+            <!--입력 폼 올곳-->
+            <input type="text" name="t_input" placeholder="ID입력" class="input-style ">
+            <input type="text" name="t_input" placeholder="이름입력" class="input-style ">
+            <input type="text" name="t_input" placeholder="이메일입력" class="input-style ">
+            <input type="text" name="t_input" placeholder="성별입력" class="input-style ">
+            <button id="bt_regist">회원등록</button>
+        </div>
+
+        <div id="content">
+
+            <div id="search-area">
+                <select id="category">
+                    <option value="">검색유형 선택</option>
+                    <!--검색유형-->
+                    <option value="0">ID로</option>
+                    <option value="1">이름으로</option>
+                    <option value="2">이메일로</option>
+                    <option value="3">성별로</option>
+                </select>
+
+                <input type="text" size="50" id="keyword" placeholder="검색어 입력">
+                <button onclick="searchData()">검색하기</button>
+
+            </div>
+            <!--검색기능 폼 올곳-->
+            <div id="list-area"></div>
+            <!--테이블출력-->
+        </div>
+        <div id="detail-area">
+            <!--내용 나올곳-->
+            <input type="text" name="detail_input" class="input-style ">
+            <input type="text" name="detail_input" class="input-style ">
+            <input type="text" name="detail_input" class="input-style ">
+            <input type="text" name="detail_input" class="input-style ">
+            <button onclick="editMember()">수정</button>
+            <button onclick="delMember()">삭제</button>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

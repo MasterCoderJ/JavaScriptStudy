@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>배경색입력받기</title>
+
+<script>
+
+	function setBg(){
+		
+		var bg = prompt("원하시는 색상을 고르세요 \n1.빨 2.주 3.노 4.초 5.파 6.남 7.보");
+
+		if (bg==1)
+		{
+			document.body.style.background="red";
+		}
+		else if(bg==2)
+		{
+			document.body.style.background="orange";
+		}
+}
+
+</script>
+
+</head>
+<body>
+
+	<button onClick="setBg()">배경색전환</button>
+
+</body>
+</html>

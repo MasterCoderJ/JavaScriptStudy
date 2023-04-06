@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>갤러리어플리케이션</title>
+    <style>
+        #wrapper {
+            width: 1100px;
+            height: 600px;
+            margin: auto;
+            background-color: bisque;
+            overflow: hidden;
+        }
+
+        #form-area {
+            width: 150px;
+            height: 100%;
+            background-color: aqua;
+            float: left;
+        }
+
+        #form-area *,
+        #detail-area * {
+            /* "*" 안에 있는 모든 영역에 영향 */
+            width: 95%;
+            margin-bottom: 5px;
+        }
+
+        #content {
+            width: 600px;
+            height: 100%;
+            float: left;
+            background-color: blueviolet;
+        }
+
+        #detail-area {
+            width: 150px;
+            height: 100%;
+            background-color: chartreuse;
+            float: left;
+        }
+
+        #slide-area {
+            width: 200px;
+            height: 100%;
+            float: left;
+            background-color: coral;     
+              
+        }
+
+        #mask{
+            width: 180px;
+            height: 200px;
+            background-color: red;  
+            margin: 10px;
+            position: relative;    /*자식이 absolute*/
+            overflow: hidden;
+        }
+
+        #search-area {
+            width: 100%;
+            height: 40px;
+            background-color: yellow;
+            text-align: center;
+        }
+
+        #list-area {
+            width: 100%;
+            height: 560px;
+            background-color: springgreen;
+        }
+    </style>
+
+    <script>
+        //전역변수 모음
+        let topcategory; // 상위카테고리 select 박스 배열을 담기위한 전역변수
+        let subcategory; //하위카테고리 select박스 배열을 담기위한 전역변수
+        let galleryArray = []; //몇 건 등록할지 알수 없으므로, 크기를 지정하지 않는다 따라서 넣을때 push()
+        let currentIndex;
+        let slideArray = []; //애니메이션에 사용될 이미지 정보를 갖는 배열
+        let box; //전역변수로 뺀 이유 ---> 한번만 만들기 위해, 만일 undefined라면 생성하고, 아니면 생성X
+        let a = 0.1;
+        let targetX=0;
+        let step = 0; //0, -180, -360..box가 움직일 스텝
+
+
+        //프로그램에서 사용할 데이터를 메모리에 올리되 기왕이면, 순서와 규칙을 만들어내면 활용하기 쉬움
+        let nameArray = [
+            ["../images/m1.jpg", "../images/m2.jpg", "../images/m3.jpg", "../images/m4.jpg", "../images/m5.jpg", "../images/m6.jpg", "../images/m7.jpg", "../images/m8.jpg", "../images/m9.jpg", "../images/m10.jpg"],
+            ["../images/shurek/img0.jpg", "../images/shurek/img1.jpg", "../images/shurek/img2.jpg", "../images/shurek/img3.jpg", "../images/shurek/img4.jpg", "../images/shurek/img5.jpg", "../images/shurek/img6.jpg",],
+            ["../images/sea/abc.jfif", "../images/sea/amgy.jfif", "../images/sea/api.jfif", "../images/sea/bbnj.jfif", "../images/sea/ccv.jfif", "../images/sea/eert.jfif", "../images/sea/kko.jfif", "../images/sea/mop.jfif", "sea/ney.jfif", "sea/rrt.jfif"],
+            ["../images/h1.png", "../images/h2.png", "../images/h3.png", "../images/h4.png", "../images/h5.png", "../images/h6.png", "../images/h7.png", "../images/h8.png", "../images/h9.png", "../images/h10.png"],
+        ];
+
+        function createThumb(){
+
+            //박스에 이미지를 추가하기전에, 이미 기존에 이미지들이 있다면 비우고 이미지를 추가해야한다
+            
+            //모든 자식의 수 조사
+            let len =box.children.length;
+            console.log("지울자식수는", len);
+            
+            for(let i=0; i<len; i++){
+                           
+                box.removeChild(box.children[0]);
+            }
+
+            for(let i =0; i<slideArray.length; i++){
+                let img = document.createElement("img");
+                img.src = slideArray[0][1];
+                img.style.width = 180+"px";
+                img.style.height = 200+ "px";
+                img.style.position = "absolute";
+                img.style.left = (i*180)+"px";
+                box.appendChild(img); //box에 부착
+            }
+        }
+
+        //보여줄 갤러리 사진을 생성하여 div에 동적으로 추가하자, 그리고 이 div의 용도는 이미지들을 안고 통째로 움직일 div
+        function createSlide(){
+            if(box== undefined){ //비어있다면 그때만 만들꺼임
+
+                box = document.createElement("div");
+                box.style.width = 180*(slideArray.length)+"px";
+                box.style.height= 200+ "px";
+                box.style.background="green";
+                box.style.position="absolute"
+                box.style.left=0+"px";
+           
+                //mask에 부착하자
+                let mask = document.getElementById("mask");
+                mask.appendChild(box);
+            }
+        }
+
+        //수정기능
+        function updateGallery(){
+            
+            if(confirm("수정하시겠어요?")){   
+                //이차원 배열요소 중 현재 보고있는 층에 해당하는 일차원 배열을 꺼내어 수정해버리자, 화면갱신을 위해 printTable로 호출
+                let gallery = galleryArray[currentIndex]; //currentIndex 는 현재 보고있는 것을 의미
+                gallery[0]= topcategory[1].value;//상위카테고리
+                gallery[1]= subcategory[1].value;//이미지
+                gallery[2]= document.getElementsByName("title")[1].value//제목
+                gallery[3]= document.getElementsByName("writer")[1].value;//작성자
+
+                printTable();
+                removeOptions(1);
+                getSubList(1);
+            }
+        }
+
+        //삭제 기능
+        function deleteGallery(){ //confirm 물어보게 만드는 코드
+            if(confirm("삭제하시겠어요?")){
+                
+                //2차원 배열에서 지금보고있는 레코드에 해당하는 배열 삭제, printTable로 화면갱신
+                galleryArray.splice(currentIndex,1); // 앞은 몇층 지울건지 뒤는 몇개 지울건지
+                printTable();
+            }
+
+        }        
+        //상세내용 보여주기
+        function getDetail(n) {
+
+            currentIndex = n; //삭제나 수정시 사용하기 위해 전역변수로 빼놓자
+
+            //전체 2차원 배열중, 선택한 링크에 소속된 배열을 추출
+            //몇 층을 눌렀는지 알아야한다..
+            let gallery = galleryArray[n]; //1차원 배열 추출
+            console.log(gallery);
+
+            //이 배열 정보를 이용하여, 우측 영역의 입력폼을 채우자!
+            topcategory[1].value = gallery[0]; //상위카테고리 선택
+
+            //서브카테고리 자동선택
+            removeOptions(1);
+            getSubList(1);
+
+            //서브카테고리 선택하기
+            subcategory[1].value = gallery[1];
+
+            //이미지 출력
+            document.getElementsByName("photo")[1].src=gallery[1]; //우측에 출력할거기 때문에 무조건 1
+            document.getElementsByName("title")[1].value=gallery[2]; //제목
+            document.getElementsByName("writer")[1].value=gallery[3]; //작성자          
+
+        }
+
+        //현재까지 누적된 2차원 배열인 galleryArray의 내용을 HTML테이블로 출력해주자
+        function printTable() {
+            let listArea = document.getElementById("list-area");
+            let tag = "<table width =\"100%\", border = \"1px\" >";
+
+            tag = tag + "<tr>"; //천장
+            tag = tag + "<td>NO</td>";
+            tag = tag + "<td>상위</td>";
+            tag = tag + "<td>이미지</td>";
+            tag = tag + "<td>제목</td>";
+            tag = tag + "<td>작성자</td>";
+            tag = tag + "</tr>"; //바닥
+
+            //레코드 출력 (이차원배열에 들어있는 데이터를 출력) --> 바깥쪽 for 층 안쪽 for 호수
+            for (let i = 0; i < galleryArray.length; i++) {
+
+                tag += "<tr>";
+                let gallery = galleryArray[i];
+
+                tag = tag + "<td>" + i + "</td>";
+
+                for (let a = 0; a < galleryArray[i].length; a++) {
+
+                    //상위카테고리의 한글화 작업..
+                    if (a == 0) {
+                        parseInt(gallery[a]); // 0,1, 2,3
+                        tag += "<td>" + topcategory[0].options[parseInt(gallery[a]) + 1].text; +"</td>";
+                    }
+
+                    else if (a == 1) { //일반텍스트가 아닌 실제 <img> 태그로..
+                        tag += "<td><img src= \"../images/" + gallery[a] + "\" width= '45px'></td>";
+                    }
+                    else if (a == 2) { //제목의 경우
+                        tag += "<td><a href='javascript:getDetail(" + i + ")'>" + gallery[a] + "</a></td>"; //<a href></a> ---> 하이퍼링크
+
+                    }
+                    else {
+                        tag += "<td>" + gallery[a] + "</td>";
+                    }
+                }
+                tag += "</tr>"
+            }
+            tag = tag + "</table>"; //닫는 테이블
+
+            listArea.innerHTML = tag; //누적된 테이블 결과 반영
+        }
+        //좌측의 입력폼에 작성한 내용을 메모리에 보관하자, 버튼을 누를때 결정되는 곳
+        function regist() {
+
+            //1차원 배열을 준비하여, 하나의 레코드를 생성하자
+            let gallery = [
+                topcategory[0].value,
+                subcategory[0].value,
+                document.getElementsByName("title")[0].value,
+                document.getElementsByName("writer")[0].value
+            ];
+            console.log("생성된레코드배열은", gallery);
+
+            galleryArray.push(gallery); //이 시점부터 galleryArray는 2차원배열(=표)이됨
+            console.log("현재까지 등록된 레코드 수는?", galleryArray);
+
+
+            //갤러리 애니메이션에 사용될 이미지를 추가한다
+            slideArray.push(gallery);
+            createSlide();
+            createThumb();
+
+        }
+
+        //서브카테고리에서 선택한 이미지명을 이용하여, 이미지 미리보기 구현
+        //targetIndex: 0이면 왼쪽 이미지 미리보기 1이면 오른쪽 이미지 미리보기
+        function previewImg(targetIndex) {
+            let photo = document.getElementsByName("photo"); //배열임
+            photo[targetIndex].src = subcategory[targetIndex].value; //서브카테고리에서 선택한 옵션값이 들어가야함
+
+        }
+        //selectbox에 옵션을 채우기 전에 모두 비우기
+        //targetIndex 0 - 좌측 서브카테고리 select
+        //targetIndex 1 - 우측 서브카테고리 select
+        function removeOptions(targetIndex) {
+
+            let len = subcategory[targetIndex].options.length
+            //반복문에 의해 배열을 지워나갈때, 2회이상 반복문에 머무를경우 2번째 회전부터는 변경된 배열의 사이즈를 이요하게 되므로 위험함. --> length를 변하지 않도록 변수로 미리 받자
+            //주의)반복문에 length를 사용하더라도, 그 로직이 1회만 수행할경우는 위험성 X
+
+            for (let i = 0; i < len; i++) {
+
+                subcategory[targetIndex].remove(0);
+
+            }
+        }
+        //사용자가 선택한 상위카테고리로부터 얻어온 index를 이용하여, 하위카테고리에 채워넣을 일차원배열을 출력한다
+        //targetIndex: 두개의  select박스 중 어느것을 이용할지를 결정짓는 변수
+        //0 좌측, 1 우측 상위카테고리 select박스
+        function getSubList(targetIndex) {
+            let topIndex = parseInt(topcategory[targetIndex].value); //'1'
+            let selectedArray = nameArray[topIndex]; //일차원배열 추출
+            console.log("하위카테고리에 채울배열은", selectedArray);
+
+            let default_op = document.createElement("option"); //'하위카테고리' 안내문구 옵션 
+            default_op.text = "하위카테고리 선택";
+            subcategory[targetIndex].add(default_op);
+
+            //배열의 수만큼, option을 동적으로 만들어 서브카테고리에 채우기
+            for (let i = 0; i < selectedArray.length; i++) {
+                let op = document.createElement("option"); //<option></option>
+                op.text = selectedArray[i]; //<option>데이터</option>
+
+                //좌측 하위카테고리에 생성된 옵션을 부착
+                subcategory[targetIndex].add(op); //추가
+            }
+        }
+
+        //지정한 시간 간격으로, targetX를 자동으로 변경시켜줄 함수
+        function setTarget(){
+            targetX = -step*180; 
+            step++;
+            
+            //step이 만일 보유한 사진개수를 넘어서면 다시 step을 0으로
+            if(step>=slideArray.length)step=0;
+
+            
+        }
+
+        //box에 추가된 사진을 대상으로 부드러운 갤러리 효과내기        
+        function slide(){
+            if(slideArray.length>0){ //슬라이드 대상이 존재할때만...
+                box.style.left = parseFloat(box.style.left)+a*(targetX-parseFloat(box.style.left))+"px";
+            }
+            setTimeout("slide()",10);
+        }
+
+        //좌측의 상위카테고리에 이벤트 연결
+        //이름을 부여한 요소는 1개일지라도, 배열로 반환
+        function init() {
+            topcategory = document.getElementsByName("topcategory");
+            subcategory = document.getElementsByName("subcategory");
+            topcategory[0].addEventListener("change", function () {
+
+                //하위카테고리 출력
+                removeOptions(0);
+                getSubList(0);
+                
+            });
+
+            //우측 이벤트
+            topcategory[1].addEventListener("change", function () {
+
+                //하위카테고리 출력
+                removeOptions(1);
+                getSubList(1);
+            });
+
+            //서브카테고리에 이벤트 연결
+            subcategory[0].addEventListener("change", function () {
+                previewImg(0); //이미지 미리보기용 함수
+            });
+
+            subcategory[1].addEventListener("change", function () {
+                previewImg(1); //이미지 미리보기용 함수
+            });
+
+            //버튼에 이벤트 연결
+            document.getElementById("bt_regist").addEventListener("click", function () {
+                regist();
+                printTable();
+            });
+
+            document.getElementById("bt_del").addEventListener("click", function () {
+                deleteGallery();   
+            });
+
+            document.getElementById("bt_edit").addEventListener("click", function () {
+                updateGallery();
+            });
+            
+            slide(); //부드러운 움직임
+            setInterval("setTarget()",2000);
+        }
+
+        window.addEventListener("load", function () {
+            init();
+        })
+
+    </script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="form-area">
+            <select name="topcategory">
+                <option value="">상위카테고리 선택</option>
+                <option value="0">산</option>
+                <option value="1">슈렉</option>
+                <option value="2">바다</option>
+                <option value="3">카드</option>
+            </select>
+
+            <select name="subcategory">
+                <option value="">하위카테고리 선택</option>
+            </select>
+            <!--프로그램적 제어대상 ex)산 슈렉 바다 카드 중에 고르면 자동으로 입력됨-->
+
+            <img src="../images/default.jpg" name="photo">
+
+            <input type="text" placeholder="제목입력" name="title">
+            <input type="text" placeholder="작성자" name="writer">
+            <button id="bt_regist">등록</button>
+
+        </div>
+        <div id="content">
+            <div id="search-area">
+                <select name="" id="">
+                    <option value="">검색유형</option>
+                    <option value="">이미지명</option>
+                    <option value="">제목</option>
+                    <option value="">작성자</option>
+                </select>
+                <input type="text" placeholder="검색어 입력" size="35">
+                <button>검색</button>
+            </div>
+            <div id="list-area"></div>
+        </div>
+        <div id="detail-area">
+            <select name="topcategory">
+                <option value="0">산</option>
+                <option value="1">슈렉</option>
+                <option value="2">바다</option>
+                <option value="3">카드</option>
+            </select>
+
+            <select name="subcategory"></select>
+            <!--프로그램적 제어대상 ex)산 슈렉 바다 카드 중에 고르면 자동으로 입력됨-->
+
+            <img src="../images/default.jpg" name="photo">
+
+            <input type="text" placeholder="제목입력" name="title">
+            <input type="text" placeholder="작성자" name="writer">
+            <button id="bt_edit">수정</button>
+            <button id="bt_del">삭제</button>
+        </div>
+        <div id="slide-area">
+            <div id="mask"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

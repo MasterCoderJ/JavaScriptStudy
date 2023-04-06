@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>충돌감지</title>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        #wrapper {
+            width: 100%;
+            height: 650px;
+            background-color: yellow;
+            position: relative;
+        }
+    </style>
+    <script src="../../lib/util.js"></script>
+    <script src="../Acc/Rect.js"></script>
+    <script>
+
+        let rect1;
+        let rect2;
+
+        //첫번째 사각형을 들고 다니자!
+        function drag(e) {
+            //좌측 사각형 객체가 보유한 div의 style 위치값을 변경하자! -->e.clientX,Y 마우스이벤트
+            rect1.x = e.clientX-50;
+            rect1.y = e.clientY-50;
+            rect1.render(); //그래픽 처리
+        }
+
+        function init() {
+            document.body.addEventListener("mousemove", function (e) {
+                //console.log(e);
+
+                drag(e);
+            });
+
+            //사각형을 2개 생성하자
+            rect1 = new Rect(document.getElementById("wrapper"), "green", 100, 200, 100, 100);
+            rect2 = new Rect(document.getElementById("wrapper"), "pink", 500, 200, 100 , 100);
+        }
+
+        window.addEventListener("load", function () {
+            init();
+        })
+    </script>
+</head>
+
+<body>
+    <div id="wrapper"></div>
+
+</body>
+
+</html>

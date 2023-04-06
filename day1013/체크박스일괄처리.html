@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>체크박스일괄처리</title>
+
+    <script>
+        //당분간은 js영역에서 이벤트를 연결하자
+
+        function init(){
+            //onclick이벤트를 프로그래밍 적으로 처리
+            var bt = document.getElementsByName("bt");
+            var ch = document.getElementsByName("ch");
+            var king = document.getElementById("king");
+
+            king.addEventListener("click", function(){
+                for(i=0;i<ch.length;i++){
+                 ch[i].checked=king.checked;
+                }                
+            })
+
+            //모두체크버튼을 누르면..
+            bt[0].addEventListener("click", function(){
+                //문서내의 모든 항목을 true로 만들자
+
+                for(i=0;i<ch.length;i++){
+                 ch[i].checked=true;
+                }                
+            });
+
+            //모두 체크해제
+            bt[1].addEventListener("click",function(){
+
+                for(i=0;i<ch.length;i++){
+                 ch[i].checked=false;
+                }
+
+            });
+        }
+
+        window.addEventListener("load", function(){
+            init();
+        });
+    </script>
+
+</head>
+<body>
+    <button name="bt">전체</button>
+    <button name="bt">해제</button> 
+    <input type="checkbox" id="king">대표체크박스
+    <p></p>
+    <input type="checkbox" name="ch"> 전체메일 <br>
+    <input type="checkbox" name="ch"> 읽은메일 <br>
+    <input type="checkbox" name="ch"> 새로운메일 <br>
+    <input type="checkbox" name="ch"> 스팸메일1 <br>
+    <input type="checkbox" name="ch"> 스팸메일2 <br>
+    <input type="checkbox" name="ch"> 스팸메일3 <br>
+    <input type="checkbox" name="ch"> 스팸메일4 <br>
+    <input type="checkbox" name="ch"> 스팸메일5 <br>
+    <input type="checkbox" name="ch"> 스팸메일6 <br>
+    <input type="checkbox" name="ch"> 스팸메일7 <br>
+</body>
+</html>

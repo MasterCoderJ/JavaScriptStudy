@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>레이아웃기초</title>
+
+<style>
+	/* div는 기본적으로 텅 비어 있는 태그이므로, 눈에 보이지 않음. 따라서 시각적인 확인을 위해 배경색을 입힘*/
+
+/*css의 구성: 선택자{}
+우리가 사용했던 선택자- 태그명,
+id-#을 붙여야함
+*/
+
+	#wrapper{
+	background-color: #ff00ff;
+	width: 800px;
+	height: 600px;
+	margin:auto;/*내가 차지하고 남은 공간을 양분하여 양쪽에 똑같이 마진을 적용*/
+	overflow:hidden; /*div영역을 넘어설때, 넘어서는 부분은 안보이게 처리
+	주의) 레이아웃 작업시 자식이 float되면 부모에는 무조건 overflow:hidden을 넣어야함*/
+}
+
+	#box1{
+		background-color: #eee;
+		width: 100px;
+		height: 100%; /*높이가 부모에 다다를때까지*/
+		float: left; /*현재의 태그를 z축으로 띄움*/
+	}
+
+	#box2{
+		background-image: url(../images/room.jpg);
+		width: 700px;
+		height: 100%;
+		float:left;
+	}
+	
+	#blind{
+		width: 100%; /*box2안에 갇혀있기 떄문에, 그안에서의 100%*/
+		height: 100%;
+		background-color: black;
+		opacity: 0.8;
+	}
+</style>
+
+<script>
+
+	var flag = false; //삼항연산자의 조건 판단의 기준이 되는 변수
+	
+	function onOff(){
+		flag = !flag;
+		//좌측의 스위치 이미지를 반대 이미지로 전환
+		var sw= document.getElementById("sw");
+		var op= (flag)? "on" : "off";
+		sw.src="../images/switch_"+op+".png";
+
+		//투명도 까지 조절
+		var blind= document.getElementById("blind");
+
+		var nf = (flag)? 0:0.8;
+		blind.style.opacity=nf;
+		
+	}
+
+</script>
+</head>
+<body>
+	<!--문서의 레이아웃을 결정하는 태그
+	모든 태그는 block형 이거나 inline형이다
+	block: 같은 수평선 상에 그 어느 누구도 허용 X
+	inline: 그 반대-->
+	<div id="wrapper">
+		<div id="box1">
+			<img src="../images/switch_on.png" id="sw" onClick="onOff()">
+		</div>
+		<div id="box2">
+			<div id="blind">검정막역할</div>
+		</div>
+	</div>
+</body>
+</html>

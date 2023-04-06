@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="classes/GameObject.js"></script>
+    <script src="classes/Brick.js"></script>
+    <script src="classes/util.js"></script>
+    <script>
+        let wrapper;
+        let brickArray=[];
+        let interval;
+        let blockCount=50;
+
+        function createWrapper(){
+            wrapper = document.createElement("div");
+            wrapper.style.width=800+"px";
+            wrapper.style.height=600+"px";
+            wrapper.style.background="yellow";
+            wrapper.style.margin="auto";
+            wrapper.style.position="absolute";
+
+            document.body.appendChild(wrapper);
+        }
+        
+        function createBrick(){
+            
+            /*----------------------------------------------------------------------------
+            랜덤으로 좌표 생성하여 벽돌 붙이기
+            ----------------------------------------------------------------------------*/
+            let posX=getRandomByRange(0, parseInt(wrapper.style.width)-60);
+            let posY=getRandomByRange(0, parseInt(wrapper.style.height)-300);
+
+            let brick = new Brick(wrapper, "green", posX, posY, 46, 46, 0, 0); //화면에 부착
+            brickArray.push(brick);//배열에 추가
+            
+            /*----------------------------------------------------------------------------
+            기존 블럭과의 충돌검사             
+            ----------------------------------------------------------------------------*/
+            for(let i=0;i<brickArray.length;i++){
+                
+                if(brick != brickArray[i]){     //방금 생성된 블럭은 검사 대상에서 제외시킨다
+                                                        //(이 조건이 없으면, 최초 생성된 블럭은 충돌조건이 무조건 참이되므로 문제가 생긴다)
+
+                    if(collisionCheck(brick, brickArray[i], 3)){ //충돌이 발견되면 , 화면에서 제거, 배열에서 제거
+                        console.log("기존 블럭과 중복되네요");
+
+                        wrapper.removeChild(brick.div); //화면에서 먼저 제거
+                        index = brickArray.indexOf(brick); //배열에서 제거하기 전에 위치를 조사
+                        brickArray.splice(index , 1);
+                        //brick.div.style.background="pink";
+                        break;
+                    }
+                }
+            }
+
+            if(brickArray.length >=blockCount){
+                clearInterval(interval);
+                wrapper.style.background="gray";
+            }
+        }
+
+        function init(){
+            createWrapper();
+
+            interval  = setInterval("createBrick()", 30);
+        }
+
+        window.addEventListener("load", function(){
+            init();
+        });
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

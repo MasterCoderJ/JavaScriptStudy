@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>단어게임</title>
+    <style>
+        #wrapper{
+            width: 500px;
+            height: 650px;
+            margin: auto;
+            text-align: center;
+            background-color: yellow;
+            border: 5px solid black;
+        }
+        #word_area{
+            width: 100%;
+            height: 200px;
+            background-color: red;
+            font-size: 80px;
+            /*내용물과 벽과의 간격 늘리기*/
+            padding-top: 30px;
+            box-sizing: border-box; /*박스크기 영향 안가도록 해줌*/
+        }
+        #input_area{
+            width: 100%;
+            height: 150px;
+            background-color: aqua;
+        }
+        #input_area input{
+            width: 98%;
+            height: 95%;
+            font-size: 65px;
+        }
+        #feedback_area{
+            width: 100%;
+            height: 200px;
+            background-color: green;
+            font-size: 150px;
+        }
+        #score_area{
+            width: 100%;
+            height: 100px;
+            background-color: purple;
+            font-size: 60px;
+        }
+    </style>
+
+<script>
+    //게임에 사용할 단어 10개를 준비하되, 이 단어들간의 순서가 있어야함
+    //순서를 만들기 위해 배열로 선언
+    var word = ["경복궁","김치","백숙","코딩","자바스크립트","자바","중앙정보","한글","핸드폰","노트북"];
+    var a = 0;
+   
+    //프로그램에서 자주 사용될 변수들을 전역으로 빼놓자!
+    var key_input;
+    var text;
+    var v;
+    var feedback_area;
+    var word_area;
+    var score_area;
+    var score=0;
+
+    function printWord(){
+        word_area = document.getElementById("word_area");
+        word_area.innerText = word[a]; // innerText: div사이에 단어 넣을수 있는 장치
+    }
+
+    function init(){
+        //프로그램에서 자주 사용될 변수들을 전역으로 빼놓자!
+        key_input = document.getElementById("key_input");
+        score_area =document.getElementById("score_area");        
+        feedback_area = document.getElementById("feedback_area");
+        word_area = document.getElementById("word_area");
+        
+        //프로그램이 가동되면 제일 첫 단어 등장
+        printWord();
+        
+        //단어 입력 컴포넌트에 리스너 연결
+        key_input.addEventListener("keyup", function(e){
+            
+            //이벤트 연결을 프로그래밍적으로 연결할 경우, 익명함수로 발생한 이벤트 정보객체인 event객차게 전달되어진다
+            //따라서 그 객체를 매개변수로 아무거나 사용하여 받아 놓자. e가 아니어도 아무거나 사용가능
+            console.log(e);
+            
+            if(e.keyCode==13){  //엔터를 치면..
+               
+                //보고있는 단어
+                text = document.getElementById("word_area").innerText;
+                    
+                //내가 입력한 단어
+                v = document.getElementById("key_input").value;
+                
+                if(text==v){ //알아맞추었으므로 보상을 주자      
+                //엔터를 입력하면 현재 보고있는 단어의 다음단어가 나오게           
+                a++;
+                printWord();
+                feedback_area.innerText = "O";
+
+                //점수 올리기
+                score+=10;
+                score_area.innerText=score+"점";
+                
+
+                }
+                else{
+                feedback_area.innerText = "X";
+                }
+                //입력한 텍스트 다시 초기화
+                key_input.value="";
+            }
+        });
+        //사용자들을 위해 커서를 미리 올려놓아주자
+        key_input.focus(); 
+    }
+    window.addEventListener("load", function(){
+        init();
+    })
+</script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="word_area">광화문</div>
+        <div id="input_area">
+            <input type="text" id="key_input">
+        </div>
+        <div id="feedback_area"></div>
+        <div id="score_area"></div>
+    </div>
+    
+</body>
+</html>

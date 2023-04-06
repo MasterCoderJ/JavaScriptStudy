@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>이미지동적출력</title>
+
+<style>
+	#wrapper{
+		width: 700px;
+		height: 700px;
+		background: yellow;
+		margin: auto;
+	}
+
+	#menu{
+		width: 100%;
+		height: 100px;
+		background: pink;
+	}
+
+	#content{
+		width: 100%;
+		height: 600px;
+		background: gray;
+	}
+	
+	/* 선택자(Selector)의 여러 표현방법을 알아보자
+			선택자(한칸띄고)자식선택자*/
+
+	#menu img{ /*menu하위의 자식요소 중 img를 대상으로*/
+		width: 70px;
+	}
+	
+	#content img{
+		width:80px;
+	}
+</style>
+
+<script>
+	
+	var food = "<img src=\"../images/p.jpg\">";
+
+	function setTable(){
+		//사용자가 선택한 이미지를 대상으로, 행과 열 수 만큼 이미지를 동적(실행시)으로 content라는 div영역 안에 출력
+		
+		var content = document.getElementById("content"); //제어할 ID
+
+		var tag="";
+
+		//반복문을 수행하기 전에 사용자가 입력한 행,열의 수를 조사하자!
+		var row = parseInt(document.getElementById("row").value); //parseInt() 문자 값을 정수로 변경
+		var col = parseInt(document.getElementById("col").value);
+
+		for(a=1;a<=row;a++){//행의 값을 가져와서 대입(층수)
+	
+		for(i=1;i<=col;i++){//열의 값을 가져와서 대입(호수)
+
+		tag=tag+ "<img src=\"../images/"+food+"\">";
+		}
+		tag=tag+"<br>";//줄바꿈은 층수와 관련
+		}
+		
+		content.innerHTML=tag;
+
+	}
+
+	function setImg1(){
+
+		var flag= false;
+
+		var f1= document.getElementById("f1");
+
+			flag=!flag; //첫번째 이미지를 위한 논리값
+			
+			food="p.jpg";
+				
+	}
+
+	function setImg2(){
+
+			var f2= document.getElementById("f2");
+
+			
+			food= "ham.jpg";	
+	}
+		
+	function setImg3(){
+
+			var f3= document.getElementById("f3");
+
+			food="sushi.jpg";
+				
+	}
+
+	function setImg4(){
+
+		var f4= document.getElementById("f4");
+
+			food="s.jpg";
+	}
+	
+	
+</script>
+</head>
+
+<body>
+
+	<div id="wrapper">
+
+		<div id="menu">
+			<img id= "f1" src="../images/p.jpg" onClick="setImg1()">
+			<img id= "f2"src="../images/ham.jpg"onClick="setImg2()">
+			<img id= "f3"src="../images/sushi.jpg"onClick="setImg3()">
+			<img id= "f4" src="../images/s.jpg"onClick="setImg4()">
+			<input type="text" placeholder="행의 개수 입력" size="10" id="row">
+			<input type="text" placeholder="열의 개수 입력" size="10" id="col">
+			<button onClick="setTable()">상차리기</button>
+
+		</div>
+		<div id="content">출력 영역</div>
+		
+	</div>
+
+</body>
+</html>

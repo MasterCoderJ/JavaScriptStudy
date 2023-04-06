@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> <!--body쪽에서 정보 끌어올리기-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../lib/util.js"></script>
+    <script>
+        var img;
+        var arr= ["가위.png","바위.png","보.png"];
+
+        function getResult(){
+            var result = getRandom(arr.length);
+            img.src = "../images/"+arr[result];
+
+        }
+
+        function init(){
+            img = document.getElementById("img");
+        }
+
+        function startMove(){
+            getResult();
+        }
+
+    </script>
+</head>
+<body onload="init()">
+    <button id="bt" onclick="startMove()">실행하기</button>
+    <img src="../images/plane.png" id="img">
+</body>
+</html>

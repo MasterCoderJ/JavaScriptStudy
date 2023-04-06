@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            width: 1000px;
+            height: 600px;
+            margin: auto;
+            overflow: hidden;
+            background-color: yellow;
+        }
+        
+        #form-area, 
+        #detail-area {
+            width: 150px;
+            height: 100%;
+            background-color: lime;
+            float: left;
+        }
+        
+        #content {
+            width: 700px;
+            height: 100%;
+            background-color: red;
+            float: left;
+        }
+
+        #search-area{
+            width: 100%;
+            height: 40px;
+            background-color: aqua;
+            text-align: center;
+        }
+
+        #list-area{
+            width: 100%;
+            height: 560px;
+            background-color: beige;
+        }
+
+        .input-style{
+            background-color: bisque;
+            border: 2px solid brown;
+            font-size: 18px;
+            width: 93%;
+            height: 25px;
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        let columnName =["아이디","이름","이메일","성별"];
+        let memberList=[];
+
+        function getInfo(index){
+            let person = memberList[index];
+            currentIndex = index;
+
+            let detail_input = document.getElementsByName("detail_input");
+            detail_input[0].value = person[0];
+            detail_input[1].value = person[1];
+            detail_input[2].value = person[2];
+            detail_input[3].value = person[3];
+        }
+
+        function regist(){
+            let t_input = document.getElementById("t_input");
+
+            if(t_input[0].value==""){
+                alert("아이디를 입력하세요");
+                t_input[0].focus();
+            }
+            else if(t_input[0].value==""){
+                alert("이름을 입력하세요");
+                t_input[0].focus();
+            }
+            else if(t_input[0].value==""){
+                alert("나이를 입력하세요");
+                t_input[0].focus();
+            }
+            else if(t_input[0].value==""){
+                alert("이메일을 입력하세요");
+                t_input[0].focus();
+            }
+            else if(t_input[0].value==""){
+                alert("성별을 입력하세요");
+                t_input[0].focus();
+            }
+            else {
+                let member=[];
+                member.push(t_input[0].value);
+                member.push(t_input[1].value);
+                member.push(t_input[2].value);
+                member.push(t_input[3].value);
+
+                memberList.push(member);
+
+                printTable();
+                resetForm("t_input");
+                console.log("현재까지 가입자수는",memberList.length)
+            }
+        }
+
+        function printTable(){
+            let listArea = document.getElementById("list-area");
+            let tag = "<table border=\"2px\" width=\"100%\">";
+            tag= tag + "<tr align=\"center\">";
+            for(let i = 0; i<columnName.length; i++){
+                tag = tag + "<td>" + columnName[i] +"</td>";
+            }
+            
+            for( let a = 0; a< memberList.length; a++){
+                let person = memberList[a];
+
+                tag = tag + "<tr onMouseOver=\"this.style.background=blue\" onMouseOut=\"this.style.background=''\">";
+                tag = tag + "<td>" + a+ "</td>";
+            }
+
+            for(let i = 0; i < person.length; i++)
+        }
+        
+        window.addEventListener("load", function(){
+
+        })
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+
+        <div id="form-area">
+            <!--입력 폼 올곳-->
+            <input type="text" name="t_input" placeholder="ID입력" class="input-style ">
+            <input type="text" name="t_input" placeholder="이름입력" class="input-style ">
+            <input type="text" name="t_input" placeholder="이메일입력" class="input-style ">
+            <input type="text" name="t_input" placeholder="성별입력" class="input-style ">
+            <button id="bt_regist">회원등록</button>
+        </div>
+
+        <div id="content">
+
+            <div id="search-area">
+                <select id="category">
+                    <option value="">검색유형 선택</option>
+                    <!--검색유형-->
+                    <option value="0">ID로</option>
+                    <option value="1">이름으로</option>
+                    <option value="2">이메일로</option>
+                    <option value="3">성별로</option>
+                </select>
+
+                <input type="text" size="50" id="keyword" placeholder="검색어 입력">
+                <button onclick="searchData()">검색하기</button>
+
+            </div>
+            <!--검색기능 폼 올곳-->
+            <div id="list-area"></div>
+            <!--테이블출력-->
+        </div>
+        <div id="detail-area">
+            <!--내용 나올곳-->
+            <input type="text" name="detail_input" class="input-style ">
+            <input type="text" name="detail_input" class="input-style ">
+            <input type="text" name="detail_input" class="input-style ">
+            <input type="text" name="detail_input" class="input-style ">
+            <button onclick="editMember()">수정</button>
+            <button onclick="delMember()">삭제</button>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

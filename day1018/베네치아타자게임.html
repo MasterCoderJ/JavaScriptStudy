@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>베네치아타자게임</title>
+    <style>
+        #wrapper {
+            width: 1150px;
+            height: 700px;
+            margin: auto;
+            background-color: yellow;
+            overflow: hidden;
+        }
+    
+        #control {
+            width: 150px;
+            height: 100%;
+            background-color: aqua;
+            float: left;
+        }
+    
+        #control select {
+            width: 97%;
+            height: 30px;
+            text-align: center;
+            background-color: aqua;
+            color: blue;
+            font-weight: bold;
+        }
+    
+        #control input {
+            width: 93%;
+            height: 50px;
+            margin-top: 10px;
+            font-size: 20px;
+        }
+    
+        #hp-area {
+            width: 100%;
+            height: 160px;
+            background-color: yellow;
+            margin-top: 10px;
+            position: relative;
+        }
+    
+        #item-area {
+            width: 100%;
+            height: 100px;
+            background-color: green;
+            margin-top: 10px;
+        }
+    
+        #score-area {
+            width: 100%;
+            height: 100px;
+            background-color: lime;
+            margin-top: 10px;
+            font-size: 70px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    
+        #content {
+            width: 1000px;
+            height: 100%;
+            float: left;
+            background-color: gray;
+            position: relative;
+        }
+    </style>
+    <script src="../lib/util.js"></script>
+    <script>
+        //단어를 배열로 선언하는 이유 --> 사용자가 입력한 값과 단어들을 비교해야하며 이떄 이 비교는 반복문으로 처리해야한다. 따라서 반복문의 대상이 되려면 단어들은 순서가 있어야하므로 배열로 선언!
+        let wordArray = ["김치", "가오리", "슭곰발", "나트륨", "자바", "둥글레차", "녹차", "백두산", "우크라이나", "대한민국"];
+
+        let step = 5; //몇 픽셀씩 내려올지 결졍짓는 변수
+
+        let spanArray = new Array(wordArray.length);//span들을 담게될 배열
+
+        let hpArray = []; //에너지 각설탕을 저장해놓은 배열
+
+        let flag = false;
+
+        let content;
+
+
+        //단어들을 담게될, span들을 생성하자
+        function createWord() {
+
+            for (let i = 0; i < wordArray.length; i++) {
+                let span = document.createElement("span");
+                span.innerText = wordArray[i];
+                span.style.position = "absolute";
+                span.style.left = (i * 90) + "px";
+                span.style.top = getRandomWithRange(-50, 50) + "px";
+                span.style.background = "purple";
+                span.style.color = "white";
+                span.style.borderRadius = "3px";
+
+                let content = document.getElementById("content");
+                content.appendChild(span);
+
+                //배열에 넣자!
+                spanArray[i] = span;
+            }
+        }
+
+        //hp에 대한 처리
+        function handleHp() {
+            for (let i = 0; i < hpArray.length; i++) {
+                //회색이 아닐경우만
+                if (hpArray[i].style.background != "gray") {
+                    hpArray[i].style.background = "gray";
+                    break;
+                }
+            }
+        }
+
+        //전체 단어 내려오기
+        function moveDown() {
+
+            if (flag) {
+                for (let i = 0; i < spanArray.length; i++) {
+                    spanArray[i].style.top = parseInt(spanArray[i].style.top) + step + "px";
+
+                    //step만큼 내려온 후, 살아남은 모든 단어span의 발바닥이 하단부의 한계점에 도달했는지에 대한 여부 확인
+                    if (parseInt(spanArray[i].style.top + 20) >= 700) {
+                        console.log(spanArray[i].innerText, "를 놓쳤어요")
+
+                        //화면에서 span제거
+                        content = document.getElementById("content");
+                        content.removeChild(spanArray[i]);
+
+                        //spanArray에서 요소제거
+                        spanArray.splice(i, 1);
+
+                        //wordArray에서 요소제거
+                        wordArray.splice(i, 1);
+
+                        //hpArray 화면 변경
+                        //모든 hp사각형인(12개)를 대상으로, 이미 회색인것을 제외하고, 회색이 아닌 최초 발견되는 것을 회색으로 둠
+                        handleHp();
+                    }
+                }
+
+
+
+            }
+
+        }
+
+
+        //hp생성하기
+        function createHp() {
+            for (let a = 0; a < 4; a++) {
+                for (let i = 0; i < 3; i++) {
+                    let hp = document.createElement("div");
+                    hp.style.width = 50 + "px";
+                    hp.style.height = 40 + "px";
+                    hp.style.background = "red";
+                    hp.style.position = "absolute";
+                    hp.style.left = (i * 50) + "px" //호수와 관련
+                    hp.style.top = (a * 40) + "px" //층수와 관련
+                    hp.style.border = "1px solid blue";
+
+                    //부착
+                    let hpArea = document.getElementById("hp-area");
+                    hpArea.appendChild(hp);
+
+                    //배열에 보관해놓자!
+                    hpArray.push(hp);
+                }
+            }
+        }
+
+        //게임의 배경바꾸기
+        function setBg(file) {
+            content = document.getElementById("content");
+            content.style.background = "url(../images/bene/" + file + ")"
+
+            //배경의 크기를 div에 맞춰보자
+            content.style.backgroundSize = "1000px 100%";
+        }
+
+        //게임가동 및 일시정지 (가동 flag=true)
+        function gameStart() {
+            flag = !flag
+
+            //게임 진행을 위해, 텍스트 입력박스에 커서 올려놓기!
+            let t_input = document.getElementById("t_input");
+            t_input.focus();
+        }
+
+        //t_input에 적용할 이벤트 함수로 뺀 것, 엔터를 치면 입력한 데이터와 게임상의 모든 단어들과 일치하는지 여부를 판단
+        //일치하면- 내려오는 단어를 화면에서 제거(그래픽처리) + 데이터제거(배열에서 삭제) 
+        function enterKey() {
+            let t_input = document.getElementById("t_input");
+            for (let i = 0; i < spanArray.length; i++) {
+
+                if (t_input.value == spanArray[i].innerText) {
+
+                    content = document.getElementById("content");
+                    //1. 화면제거 2. wordArray제거 3. spanArray제거
+                    content.removeChild(spanArray[i]);
+                    wordArray.splice(i, 1); //splice oo.splice(몇번째요소,1);
+                    spanArray.splice(i, 1);
+
+                    //t_input에 입력했던 단어를 초기화(제거)
+                    t_input.value = ""; //아무것도 없음
+                }
+            }
+        }
+
+
+        function init() {
+            createHp();
+            createWord();
+            setInterval("moveDown()", 50);
+        }
+
+        window.addEventListener("load", function () { //이벤트 거는 곳
+            init();
+
+            //select 박스에 이벤트 연결
+            document.querySelector("select").addEventListener("change", function () {
+
+                //이 영역은 select요소에 의해 발생한 이벤트 영역이므로, 이벤트의 발생추체인 select박스가 this임!
+                console.log("당신이 선택한 배경은", this.value);
+                setBg(this.value); //매개변수에 파일명을 전달
+            });
+
+            //t_input에 이벤트 연결하기
+            document.getElementById("t_input").addEventListener("keyup", function (e) {
+                //console.log(e);]
+
+                if (e.keyCode == 13) {
+                    enterKey();
+                }
+            });
+        })
+    </script>
+    </head>
+    
+    <body>
+        <div id="wrapper">
+            <div id="control">
+                <select>
+                    <option value="">배경선택</option>
+                    <option value="bg1.jpg">배경1</option>
+                    <option value="bg2.jpg">배경2</option>
+                    <option value="bg3.jpg">배경3</option>
+                </select>
+                <input type="text" placeholder="단어입력" id="t_input">
+                <div id="hp-area">hp가 올예정</div>
+                <div id="item-area"></div>
+                <div id="score-area"></div>
+                <button onclick="gameStart()">Start</button>
+                <button onclick="gameStart()">Pause</button>
+            </div>
+            <div id="content"></div>
+        </div>
+    </body>
+    
+    </html>

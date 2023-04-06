@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>감속도운동</title>
+
+    <style>
+        #pic{
+
+            /*부모인 바디를 기준으로 한 위치*/
+            /*position: absolute; 
+            left: 0px;
+            top: 200px;
+            width: 100px; */
+                        
+            
+        }
+
+    </style>
+
+    <script>
+        
+        //현실을 반영하지 않고 특정위치를 다가갈때 얼마나 어색한지
+        var targetX=600; //도달할 위치
+        var a= 0.1;
+
+        function move1(){
+            var pic = document.getElementById("pic");
+            pic.style.left=targetX+"px"
+        }
+
+        function move2(){ 
+            
+            //나의 위치 = 내 위치 + a*(목표지점 - 내위치) -->감속도 공식 a= 몇% 감속 암기!!!
+            var pic = document.getElementById("pic");
+            pic.style.left = parseInt(pic.style.left)+ a*(targetX - parseInt(pic.style.left))+"px"; //parseInt 문자를 정수로 전환
+
+
+        }
+        function init(){
+            //스타일시트의 포지션을 js에서 확실히 제어하려면, 아예 포지션 자체를 css에서 적용하지 않고 js에서 적용하는게 확실함
+            var pic = document.getElementById("pic");
+            pic.style.position="absolute"; // css상의 position: absolute와 동일
+            pic.style.left=0+"px"; //css의 left:0px과 동일
+            pic.style.top= 200+"px"; //css의 left:0px과 동일
+            
+
+        }
+
+    </script>
+</head>
+<body onload="init()">
+    <button onclick="move1()">순간이동</button>
+    <button onclick="move2()">감속도이동(현실반영)</button>
+
+    <img src="../images/mon.jpg" id="pic">
+</body>
+</html>

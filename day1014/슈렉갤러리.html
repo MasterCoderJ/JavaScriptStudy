@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슈렉갤러리</title>
+    <style> /*2번*/
+        #wrapper{
+            width: 500px;
+            height: 400px;
+            margin: auto;
+            background-color: yellow;
+        }
+
+        #content{
+            width: 100%;
+            height: 340px;
+            background-color: aqua;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #control{
+            width: 100%;
+            height: 60px;
+            background-color: burlywood;
+            text-align: center;
+        }
+
+        #control a{
+            text-decoration: none; /*링크에 의해 생성된 밑줄제거*/
+        }
+    </style>
+    <script>
+       
+       let nameArray=["img0.jpg","img1.jpg","img2.jpg","img3.jpg","img4.jpg","img5.jpg","img6.jpg"];
+       
+        //프로그램에서 변화가능성이 없는 데이터의 경우 변수 아닌 상수를 주로 사용. js에서는 const선언시 반드시 초기화가 강제된다
+        const IMG_WIDTH=500;
+        const IMG_Height=340;
+        let box;
+        let content;
+        let img;
+        let a = 0.1;
+        let targetX;
+
+        //이미지 생성하기 4번
+        function createImage(){
+            for(i=0;i<nameArray.length;i++){
+            img = document.createElement("img");
+            img.src="../images/shurek/"+nameArray[i];
+            img.position="absolute";
+            img.style.left=(i*IMG_WIDTH)+"px";
+            img.style.width=IMG_WIDTH+"px"
+            img.style.height=IMG_Height+"px"
+
+            box.appendChild(img);
+            }    
+        }
+
+        function setTarget(x){
+            targetX=x;
+        }
+        //원하는 이미지 보여주기 6번
+        function move(x){
+            
+            //0버튼-0 1버튼 -500 2버튼 -1000
+            //box의 left값은 = box의 위치 + a*(목표지점 - box의 위치)
+            box.style.left= x+"px";
+            box.style.left = parseFloat(box.style.left) + a*(targetX-parseFloat(box.style.left))+"px";
+        }
+
+        //네비게이션 만들기 5번
+        function createNavy(){
+
+            for(i=0;i<nameArray.length;i++){
+            //div는 블럭형 span은 인라인 (width,height적용불가)
+            let dot = document.createElement("a"); //<span></span>
+            dot.innerText="●";
+            dot.style.fontSize=30+"px";
+            dot.style.color="red";
+            dot.style.margin = 5 +"px"
+            dot.href ="javascript:setTarget("+(-IMG_WIDTH*i)+")"; //<a href="javascript:~~"></a>
+            targetX=(-IMG_WIDTH*i);
+
+            //control div에 부착
+            let control = document.getElementById("control");
+            control.appendChild(dot);
+            }
+        }
+        
+        function init(){ // 3번
+            //슈렉 이미지들을 탑재할 div 생성
+            box = document.createElement("div");
+            box.style.width=IMG_WIDTH*nameArray.length+"px";
+            box.style.height=IMG_Height+"px";
+            box.style.background="red";
+            box.style.position="absolute"; //content div의 자식
+            box.style.left=0+"px";
+
+            //content에 박스 부착
+            content = document.getElementById("content");
+            content.appendChild(box);
+        }
+        window.addEventListener("load", function(){
+            init();
+            createImage(); //초기화 이후에 이미지 생성하기
+            createNavy();
+            setInterval("move()",10)
+        })
+    </script>
+</head>
+<body> <!--1번-->
+    <div id="wrapper">
+        <div id="content"></div>
+        <div id="control"></div>
+    </div>
+    
+</body>
+</html>

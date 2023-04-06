@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>짝홀수</title>
+
+<script>
+
+	var flag = true; //전역변수
+
+	while(flag){
+		var n = prompt("원하시는수를 입력하세요 \n 프로그램을 종료하시려면 0을 입력하세요");
+	
+	//입력한 n값이 0이면 무한루프 종료
+	flag=(n==0)? false:true;
+
+	//삼항연산자로 n의 값을 판단해보기
+	var result = (n%2==0)?  "짝수" : "홀수";
+
+	alert(result+"입니다");
+	}
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

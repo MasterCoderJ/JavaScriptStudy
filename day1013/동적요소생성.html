@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동적요소생성</title>
+
+    <script>
+        //지금까지는 body영역에 태그를 작성하고 이벤트 핸들러를 연결해왔지만 자바스크립트에서도 동적으로 동일한 작업이 가능하다
+        function createBtn(){
+            var img = document.createElement("img");//<img>작성과 동일
+            img.src = "../images/mon.jpg";// <img src =과 동일>
+
+            //이미지 요소에 클릭 이벤트 구현
+
+            img.addEventListener("mouseover",function(){
+                alert("올렸어?");
+            })
+               
+        
+
+            //body에 붙이자
+            document.body.appendChild(img);
+        }
+        
+        addEventListener("load",function(){ //로드가 되면 오른쪽 함수가 작동
+            createBtn();
+        });
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

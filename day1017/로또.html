@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로또</title>
+    <style>
+        #wrapper{
+            width: 600px;
+            height: 100px;
+            margin: auto;
+            background-color: gray;
+            position: relative;
+        }
+
+    </style>
+    <script src="../lib/util.js"></script>
+    <script>
+        let lotto=[];
+        let colorArray=["red","orange","yellow","green","blue","navy"]; //각 번째의 공마다 사용될 색상
+        let count = 0; //배열에 존재할 경우 증가될 카운트변수
+        let ball;
+        let interval; //setInterval을 제어하기 위한 변수
+
+        //로또번호가 출력될 공
+        function createBall(){
+            ball = document.createElement("div");
+            ball.style.width = 100+"px";
+            ball.style.height = 100+"px";
+            ball.style.position = "absolute";
+            ball.style.left = (lotto.length-1)*100+ "px";
+            ball.style.backgroundImage= "linear-gradient(pink,"+colorArray[lotto.length-1]+")"; //입체적 효과
+            ball.style.borderRadius= 50+"%";
+            ball.style.textAlign="center";
+            ball.style.fontSize=50+"px";
+            ball.style.paddingTop=15+"px";
+            ball.style.boxSizing="border-box";
+
+            let wrapper = document.getElementById("wrapper");
+            wrapper.appendChild(ball);
+            return ball;
+        }
+        
+        //로또번호 추첨하기
+        function getNum(){
+            //중복 여부에 대한 판단은, 새로운 번호를 추출할때마다, 새롭게 해야함
+
+            let count = 0; //배열에 존재할 경우 증가될 카운트 변수
+            
+            //임의의 번호를 추출 범위는 1-45
+            let n = getRandomWithRange(1,45);
+           // console.log("랜덤수는", n);
+           
+           //방금 추출된 n이 기존배열인 lotto에 없을때만 push할것
+           for(let i =0; i< lotto.length;i++){ //현재 채워진 배열길이만큼
+                if(lotto[i]==n){ //동일한 번호가 발견되면...
+                    count++;
+                    console.log(n,"에 대한 중복발견");
+                }
+            }
+           
+            if(count<1){ //중복이 발견되지 않을경우
+
+                lotto.push(n);//배열에 추가
+                
+                //배열의 상태에 머무르지 말고, 유저들을 위해 시각화시켜주자, 공에 innerText로 추출한 n을 대입
+                let b = createBall(); //공이 태어나고, 그 태어난 공을 제어하기 위해 변수로 받자
+                b.innerText=n;
+            }
+            console.log("현재배열의 상태는", lotto  );
+
+
+            //배열의 크기가 6에 도달할 경우 더이상의 추첨은 필요없기 때문에 setInterval로 멈추기
+            if(lotto.length>=6){
+                clearInterval(interval);
+                //추첨이 종료된 것에 대한, 시각적 효과
+                let wrapper = document.getElementById("wrapper");
+                wrapper.style.background="white";
+            }
+        }
+        function start(){
+            //배경색을 다시 회색으로
+            document.getElementById("wrapper").style.background="gray";
+            //기존배열의 요소들을 모두 제거하자
+            let len = lotto.length;
+            for(let i= 0; i<len;i++){
+                lotto.splice(0,1);
+            }
+
+            //시각적으로 표현된 공도 제거하자
+            //wrapper로부터 자식요소를 제거하자
+            let wrapper = document.getElementById("wrapper");
+            let chil = wrapper.children;
+            for(let i = 0; i<chil;i++){
+                wrapper.removeChild(wrapper.children(0));
+            }
+            
+
+          interval = setInterval("getNum()",1000);  
+        }
+        function init(){
+           
+        }
+        window.addEventListener("load", function(){
+            init();
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper"></div>
+    <button onclick="start()">추첨실행</button>
+    
+</body>
+</html>

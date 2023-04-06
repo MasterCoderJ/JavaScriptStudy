@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슈퍼마리오</title>
+    <script src="../day1028/classes/GameObject.js"></script>
+    <script src="../day1028/classes/Brick.js"></script>
+    <script src="../day1028/classes/Mario.js"></script>
+    <script src="../lib/util.js"></script>
+    <script>
+        let brickArray = []; //벽돌을 보관할 배열
+        const Brick_Size = 48; //나중에 border=1 적용을 염두에 두었기 때문!
+        let mario;
+        let info; //게임의 정보를 출력할 div영역        
+        let gameFlag = true;
+
+        //마리오 점프시키기
+        function jump() {
+
+            //마리오 발이 바닥에 닿았을때만
+        
+            if (mario.velY <= 0 && mario.fall) {
+                mario.fall = false;
+                mario.velY = -15;
+            }
+        }
+
+        //움직이기
+        function moveX(n) {
+            mario.velX = n;
+        }
+
+        //실시간 정보확인
+        function printLog() {
+            let str = "velY:" + mario.velY + "\n";
+            str += "y:" + mario.y + "\n";
+            str += "중력g:" + mario.g + "\n";
+            str += "width:" + mario.width + "\n";
+            str += "height:" + mario.height + "\n";
+            str += "fall:" + mario.fall + "\n";
+
+            info.innerText = str;
+        }
+
+        //마리오 생성
+        function createMario() {
+
+            mario = new Mario(document.body, "red", 100, 50, 50, 75, 0, 5);
+        }
+
+        //벽돌생성
+        function createBrick() {
+            for (let i = 0; i < 6; i++) { //6층
+                let array = [];
+
+                for (let a = 0; a < 20; a++) { //20호수
+
+                    if (i == 4) {
+                        //container, color, x, y, width, height,velX,velY
+                        let brick = new Brick(document.body, "yellow", 100 + (a * Brick_Size), 100 + (i * Brick_Size), Brick_Size, Brick_Size, 0, 0);
+                        array.push(brick);
+                    }
+                }
+                brickArray.push(array);//6번 푸쉬
+            }
+        }
+
+        function gameLoop() {
+
+            if (gameFlag) {
+
+                mario.tick();
+                mario.render();
+
+                printLog();
+            }
+
+
+            setTimeout("gameLoop()", 10);
+        }
+
+        function init() {
+            info = document.getElementById("info");
+            createBrick();
+            createMario();
+            gameLoop();
+
+            //키보드 이벤트 연결
+
+            document.body.addEventListener("keydown", function (e) {
+                switch (e.keyCode) {
+                    case 37: moveX(-5); break; //좌
+                    case 39: moveX(5); break; //우
+                    case 27: gameFlag = !gameFlag; break;
+                    case 32: jump(); break;
+
+                }
+            })
+
+            document.body.addEventListener("keyup", function (e) {
+                switch (e.keyCode) {
+                    case 37: moveX(0); break; //좌
+                    case 39: moveX(0); break; //우
+                }
+            })
+
+
+        }
+        window.addEventListener("load", function () {
+            init();
+        })
+    </script>
+</head>
+
+<body>
+    <div id="info"></div>
+</body>
+
+</html>

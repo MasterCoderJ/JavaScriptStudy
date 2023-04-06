@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이퀄라이저</title>
+    <style>
+        body{
+            margin: 0px;
+        }
+        #wrapper{
+            width: 700px;
+            height: 400px;
+            margin: auto;
+            background-color: aqua;
+            position: relative; /*자식때문에,,*/
+        }
+    </style>
+    <script src="../lib/util.js"></script>
+    <script>
+        let bar=new Array(7); //막대기가 한개 이상이므로 복수로 제어하기 위해 
+        let b;
+        let a=0.1
+        let targetH=new Array(bar.length);
+        let color = ["red","orange","yellow","green","blue","navy","purple"];
+        
+        //지정한 시간 간격으로, targetH값을 랜덤하게 변경해본다.
+        //targetH값만 변경해도 루프에 의해 움직임 효과가 난다
+        function setTarget(){
+            for(i=0;i<bar.length;i++){
+            targetH[i]= getRandomWithRange(10,400);
+            }
+        }
+
+        //막대의 위치를 감속도 운동으로 변하게 하는 함수
+        function move(){
+            //막대높이 = 기존막대높이 + a*(목표지점-기존막대높이)
+            for(i=0;i<bar.length;i++){
+            bar[i].style.height = parseFloat(bar[i].style.height)+a*(targetH[i]-parseInt(bar[i].style.height))+"px";
+            bar[i].innerText=bar[i].style.height; //수치 가시화
+            }
+        }
+
+        function init(){
+            for(i=0;i<7;i++){
+            //div를 이퀄라이저 막대로 이용하기 위해 동적으로 div생성
+            bar[i] = document.createElement("div");
+            bar[i].style.width=50+"px";
+            bar[i].style.height = 400+"px";
+            bar[i].style.background=color[i];
+            bar[i].style.position="absolute";
+            bar[i].style.left=(i*50)+"px"
+
+            //wrapper에 붙이자
+            let wrapper = document.getElementById("wrapper");
+            wrapper.appendChild(bar[i]); //막대부착
+            }
+                      
+        }
+        function gameLoop(){
+            b= setInterval("move()",10);
+        }
+        function stopLoop(){
+            let bt = document.getElementById("bt");
+            clearInterval(b);
+        }
+        window.addEventListener("load", function(){
+            init();
+            gameLoop();
+            setInterval("setTarget()",700);
+        })
+    </script>
+</head>
+<body>
+    <div id="wrapper"></div>
+    <button id="bt" onclick="stopLoop()">그만</button>
+    
+</body>
+</html>

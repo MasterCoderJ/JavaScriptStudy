@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>비행기prac</title>
+</head>
+
+<style>
+	
+	body{
+		background-image: url(../images/game_bg.jpg);
+	}
+
+	img{
+		width: 70px;
+		position: absolute;
+		left: 200px;
+		top: 300px;        /*비행기 위치*/
+	}
+
+</style>
+
+<script>
+	
+	var x = 200;
+	var y = 300;
+
+	function moveDown(){
+		
+		var pic = document.querySelector("img");
+		y= y+5;
+		pic.style.top = y+"px"
+
+	}
+
+	function moveUp(){
+		var pic = document.querySelector("img");
+		y=y-5;
+		pic.style.top = y+"px"
+	}
+
+	function moveLeft(){
+		var pic = document.querySelector("img");
+		x=x-5;
+		pic.style.left = x+"px"
+	}
+
+	function moveRight(){
+		var pic = document.querySelector("img");
+		x=x+5;
+		pic.style.left = x+"px"
+
+	}
+
+</script>
+
+<body>
+
+	<table border = "2px">
+		
+		<tr>
+			<td></td>
+			<td><input type="button" value="↑"onClick="moveUp()"></td>
+			<td></td>
+			
+
+		</tr>
+
+		<tr>
+			<td><input type="button" value="←"onClick="moveLeft()"></td>
+			<td><input type="button" value="↓"onClick="moveDown()"></td>
+			<td><input type="button" value="→"onClick="moveRight()"></td>
+			
+
+		</tr>
+	</table>
+
+	<img src="../images/plane.png"> 
+
+</body>
+</html>
+
+<script>
+	var x = 200;
+	var y = 300;
+	var posX = 0;
+
+	function moveBg() {
+		posX=posX-5
+		document.body.style.backgroundPosition=posX+"px 0px";
+		setTimeout("moveBg()",1);
+	}
+
+moveBg();
+
+
+</script>
